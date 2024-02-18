@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Design - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+Details
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details of the product
+{% endblock %}
+
+{% block body %}
+  <section class="shop-single pt-130 pb-130">
+    <div class="container">
+        <!-- product-details area start here -->
+        <div class="product-details-single pb-40">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="image img">
+                        <div class="swiper shop-single-slide">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="content h24">
+                        <h3 class="pb-2 primary-color">{{ design.titre }}</h3>
+                        <div class="star primary-color pb-2">
+                            <span><i class="fa-solid fa-star sm-font"></i></span>
+                            <span><i class="fa-solid fa-star sm-font"></i></span>
+                            <span><i class="fa-solid fa-star sm-font"></i></span>
+                            <span><i class="fa-solid fa-star sm-font"></i></span>
+                            <span><i class="fa-solid fa-star-half-stroke sm-font"></i></span>
+                        </div>
+                        <h2 class="pb-3">{{ design.prix }}</h2>
+                        <h4 class="pb-2 primary-color">Product Description</h4>
+                        <p class="text-justify mb-10">{{ design.description }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- product-details area end here -->
+
+        <!-- description review area start here -->
+         <div class="shop-singe-tab">
+                    <ul class="nav nav-pills mb-4 bor-top bor-bottom py-2">
+                        <li class="nav-item">
+                            <a href="#description" data-bs-toggle="tab" class="nav-link ps-0 pe-3 active">
+                                <h4 class="text-uppercase">description</h4>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#review" data-bs-toggle="tab" class="nav-link">
+                                <h4 class="text-uppercase">reviews (4)</h4>
+                            </a>
+                        </li>
+                    </ul>
+        <div class="tab-content">
+            <div id="description" class="tab-pane fade show active">
+                <!-- Your product description content here -->
+            </div>
+            <div id="review" class="tab-pane fade">
+                <div class="review-wrp">
+                    <!-- Loop through feedback data here -->
+                    {% for avi in design.avis %}
+                        <div class="abmin d-flex flex-wrap flex-md-nowrap align-items-center pb-4">
+                            <div class="img pb-4 pb-md-0 me-4">
+                            </div>
+                            <div class="content position-relative p-4 bor">
+                                <div class="head-wrp pb-1 d-flex flex-wrap justify-content-between">
+                                    <a href="#0">
+                                    </a>
+                                    <div class="star primary-color">
+                                        {% for i in 1..5 %}
+                                            {% if i <= avi.avis %}
+                                                <span><i class="fa-solid fa-star sm-font"></i></span>
+                                            {% else %}
+                                                <span><i class="fa-solid fa-star-o sm-font"></i></span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <p class="text-justify">{{ avi.commentaire }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <!-- Add feedback form here -->
+                    <div class="section-title mt-5 py-15 mb-30">
+    <h2 class="text-capitalize primary-color mb-10">Add a Review ?</h2>
+    <p class="mb-20">Feel Free , submit the Form and share your Feedback</p>
+                    
+                <button type="submit" class="btn-one"><span>Add Now</span></button>
+                </div>
+            </div>
+        </div>
+        <!-- description review area end here -->
+    </div>
+</section>
+
+<a class="mt-40 btn-one" href="{{ path('app_design_index') }}">back to Shop</a>
+
+{% endblock %}
