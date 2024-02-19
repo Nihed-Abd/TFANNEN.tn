@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamation Index{% endblock %}
+
+{% block body %}
+<section class="reclamation-page pt-5 pb-5">
+    <div class="container">
+        <div class="reclamation-list radius-10 bor sub-bg">
+            <div class="reclamation-header py-3 px-4 d-flex justify-content-between align-items-center fw-bold text-white text-uppercase">
+                <div class="reclamation-column">ID</div>
+                <div class="reclamation-column">Object</div>
+                <div class="reclamation-column">Type</div>
+                <div class="reclamation-column">Description</div>
+                <div class="reclamation-column">Date</div>
+                <div class="reclamation-column">Response</div> <!-- New column for Response -->
+                <div class="reclamation-column">Actions</div>
+            </div>
+
+            {% for reclamation in reclamations %}
+            <div class="reclamation-item p-4 bor-top bor-bottom d-flex justify-content-between align-items-center">
+                <div class="reclamation-column">{{ reclamation.id }}</div>
+                <div class="reclamation-column">{{ reclamation.objet }}</div>
+                <div class="reclamation-column">{{ reclamation.typeDeReclamation }}</div>
+                <div class="reclamation-column">{{ reclamation.descriptionReclamation }}</div>
+                <div class="reclamation-column">{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</div>
+                <div class="reclamation-column">
+                    {% if reclamation.reponse %}
+                        {{ reclamation.reponse.status }} <!-- Display response status if exists -->
+                    {% else %}
+                        No response
+                    {% endif %}
+                </div>
+                <div class="reclamation-column">
+                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">Show</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}">Edit</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="reclamation-item p-4 bor-top bor-bottom d-flex justify-content-center align-items-center">
+                <div class="reclamation-column" colspan="7">No records found</div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

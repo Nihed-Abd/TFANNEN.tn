@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reclamation{% endblock %}
+
+{% block body %}
+<section class="reclamation-page pt-5 pb-5">
+    <div class="container">
+        <div class="reclamation-list radius-10 bor sub-bg">
+            <div class="reclamation-header py-3 px-4 d-flex justify-content-between align-items-center fw-bold text-white text-uppercase">
+                <div class="reclamation-column col">ID</div>
+                <div class="reclamation-column col">Object</div>
+                <div class="reclamation-column col">Type</div>
+                <div class="reclamation-column col">Description</div>
+                <div class="reclamation-column col">Date</div>
+                <div class="reclamation-column col">Response</div> <!-- New column for Response -->
+                <div class="reclamation-column col">Actions</div>
+            </div>
+
+            {% if reclamation %}
+            <div class="reclamation-item p-4 bor-top bor-bottom">
+                <div class="row gx-2 align-items-center">
+                    <div class="col">{{ reclamation.id }}</div>
+                    <div class="col">{{ reclamation.objet }}</div>
+                    <div class="col">{{ reclamation.typeDeReclamation }}</div>
+                    <div class="col">{{ reclamation.descriptionReclamation }}</div>
+                    <div class="col">{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</div>
+                    <div class="col">
+                        {% if reclamation.reponse %}
+                            {{ reclamation.reponse.status }} <!-- Display response status if exists -->
+                        {% else %}
+                            No response
+                        {% endif %}
+                    </div>
+                    <div class="col">
+                        <a href="{{ path('app_reclamation_index') }}" class="btn btn-primary">Index</a>
+                        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id}) }}" class="btn btn-secondary">Edit</a>                        
+                    </div>
+                </div>
+            </div>                       
+            {% else %}
+            <div class="reclamation-item p-4 bor-top bor-bottom">
+                <div class="d-flex justify-content-center align-items-center">
+                    <div class="col" colspan="7">No reclamation found</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+{{ include('reclamation/_delete_form.html.twig') }}
+{% endblock %}

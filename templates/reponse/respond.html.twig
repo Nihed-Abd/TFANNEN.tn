@@ -1,0 +1,25 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Respond to Reclamation{% endblock %}
+
+{% block body %}
+    <h1>Respond to Reclamation</h1>
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.status) }}
+            {{ form_widget(form.status) }}
+        </div>
+        <div>
+            {{ form_label(form.decision) }}
+            {{ form_widget(form.decision) }}
+        </div>
+        <div>
+            {# Hidden field to store the reclamation ID #}
+            {{ form_widget(form.id_reclamation) }}
+        </div>
+        <button type="submit">Submit Response</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">Cancel</a>
+{% endblock %}

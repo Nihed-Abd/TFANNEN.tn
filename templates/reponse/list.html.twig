@@ -1,0 +1,16 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}List of Reclamations{% endblock %}
+
+{% block body %}
+    <h1>List of Reclamations</h1>
+
+    <ul>
+        {% for reclamation in reclamations %}
+            <li>
+                Reclamation ID: {{ reclamation.id }}
+                <a href="{{ path('app_reclamation_respond', {'id': reclamation.id}) }}" class="btn btn-primary">Respond</a>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
