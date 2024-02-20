@@ -4870,3 +4870,16 @@ input {
     margin: 15px 0;
   }
 }
+.orange-button {
+  background-color: #fa4318;
+  color: white; /* text color */
+  border: none; /* remove default border */
+  border-radius: 20px; /* adjust the value to make the border more or less rounded */
+  padding: 10px 20px; /* adjust padding for better appearance */
+  font-size: 16px; /* adjust font size */
+  cursor: pointer; /* show pointer on hover */
+}
+
+.orange-button:hover {
+  background-color: #e03c13; /* darken the color slightly on hover */
+}

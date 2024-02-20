@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+admin_design_index:
+    path: /design/admin
+    controller: App\Controller\DesignController::adminIndex
+    methods: ['GET']

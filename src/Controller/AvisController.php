@@ -22,7 +22,17 @@ class AvisController extends AbstractController
             'avis' => $avisRepository->findAll(),
         ]);
     }
+    #[Route('/admin/design/{id}/avis', name: 'admin_design_avis')]
+        public function showDesignAvis(int $id, AvisRepository $avisRepository): Response
+    {
+    // Fetch the avis related to the design_id
+    $avis = $avisRepository->findBy(['design' => $id]);
 
+    // Render the twig template with the avis list
+    return $this->render('avis/AdminAvis.html.twig', [
+        'avis' => $avis,
+            ]);
+    }
     #[Route('/new/{design_id}', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $design_id): Response
     {
