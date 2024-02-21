@@ -3,9 +3,35 @@
 {% block title %}New Reponse{% endblock %}
 
 {% block body %}
-    <h1>Create new Reponse</h1>
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">New Reponse</h6>
+                    {{ form_start(form , {'attr': {'class':'form-horizontal','novalidate':'novalidate'}} ) }}
+                        <div class="mb-3">
+                            {{ form_label(form.status, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.status) }} {# Afficher les erreurs ici #}
+                        </div>
+                        <div class="mb-3">
+                            {{ form_label(form.decision, null, {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.decision, {'attr': {'class': 'form-control'}}) }}
+                            {{ form_errors(form.decision) }} {# Afficher les erreurs ici #}
+                        </div>
+                        <div class="mb-3">
+                            {# Adding a label and styling for the id_reclamation field #}
+                            <label for="id_reclamation" class="form-label">Reclamation ID</label>
+                            {{ form_widget(form.id_reclamation, {'attr': {'class': 'form-control', 'placeholder': 'Enter Reclamation ID'}}) }}
+                            {{ form_errors(form.id_reclamation) }} {# Afficher les erreurs ici #}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit Response</button>
+                    {{ form_end(form) }}
 
-    {{ include('reponse/_form.html.twig') }}
-
-    <a href="{{ path('app_reponse_index') }}">back to list</a>
+                    <a href="{{ path('app_reponse_index') }}" class="btn btn-secondary mt-3">Back to List</a>
+                </div>
+            </div>
+            <!-- Other columns go here if needed -->
+        </div>
+    </div>
 {% endblock %}

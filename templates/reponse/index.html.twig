@@ -3,43 +3,48 @@
 {% block title %}Reponse index{% endblock %}
 
 {% block body %}
-    <h1>Reponse index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Status</th>
-                <th>Decision</th>
-                <th>Reclamation</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for reponse in reponses %}
-            <tr>
-                <td>{{ reponse.id }}</td>
-                <td>{{ reponse.status }}</td>
-                <td>{{ reponse.decision }}</td>
-                <td>
-                    {% if reponse.idReclamation %}
-                        <a href="{{ path('app_reclamation_show', {'id': reponse.idReclamation.id}) }}">{{ reponse.idReclamation.id }}</a>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">Reponse index</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">Id</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Decision</th>
+                            <th scope="col">Reclamation</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for reponse in reponses %}
+                        <tr>
+                            <td>{{ reponse.id }}</td>
+                            <td>{{ reponse.status }}</td>
+                            <td>{{ reponse.decision }}</td>
+                            <td>
+                                {% if reponse.idReclamation %}
+                                    <a href="{{ path('app_reclamation_show', {'id': reponse.idReclamation.id}) }}">{{ reponse.idReclamation.id }}</a>
+                                {% else %}
+                                    No associated reclamation
+                                {% endif %}
+                            </td>
+                            <td>
+                                <a href="{{ path('app_reponse_show', {'id': reponse.id}) }}">show</a>
+                                <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>
+                            </td>
+                        </tr>
                     {% else %}
-                        No associated reclamation
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{{ path('app_reponse_show', {'id': reponse.id}) }}">show</a>
-                    <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_reponse_new') }}">Create new</a>
+                        <tr>
+                            <td colspan="5">no records found</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

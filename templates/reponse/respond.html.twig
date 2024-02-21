@@ -3,23 +3,36 @@
 {% block title %}Respond to Reclamation{% endblock %}
 
 {% block body %}
-    <h1>Respond to Reclamation</h1>
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">Respond to Reclamation</h6>
+                    {{ form_start(form , {'attr': {'class':'form-horizontal','novalidate':'novalidate'}} ) }}
+<div class="mb-3">
+    {{ form_label(form.status, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.status, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.status) }}
+</div>
+<div class="mb-3">
+    {{ form_label(form.decision, null, {'label_attr': {'class': 'form-label'}}) }}
+    {{ form_widget(form.decision, {'attr': {'class': 'form-control'}}) }}
+    {{ form_errors(form.decision) }}
+</div>
+<div class="mb-3">
+    {# Adding a label and styling for the id_reclamation field #}
+    <label for="id_reclamation" class="form-label">Reclamation ID</label>
+    {{ form_widget(form.id_reclamation, {'attr': {'class': 'form-control', 'placeholder': 'Enter Reclamation ID'}}) }}
+    {{ form_errors(form.id_reclamation) }}
+</div>
+<button type="submit" class="btn btn-primary">Submit Response</button>
+{{ form_end(form) }}
 
-    {{ form_start(form) }}
-        <div>
-            {{ form_label(form.status) }}
-            {{ form_widget(form.status) }}
-        </div>
-        <div>
-            {{ form_label(form.decision) }}
-            {{ form_widget(form.decision) }}
-        </div>
-        <div>
-            {# Hidden field to store the reclamation ID #}
-            {{ form_widget(form.id_reclamation) }}
-        </div>
-        <button type="submit">Submit Response</button>
-    {{ form_end(form) }}
 
-    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}">Cancel</a>
+                    <a href="{{ path('app_reclamation_show', {'id': reclamation.id}) }}" class="btn btn-secondary mt-3">Cancel</a>
+                </div>
+            </div>
+            <!-- Other columns go here if needed -->
+        </div>
+    </div>
 {% endblock %}

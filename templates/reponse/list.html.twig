@@ -3,14 +3,41 @@
 {% block title %}List of Reclamations{% endblock %}
 
 {% block body %}
-    <h1>List of Reclamations</h1>
-
-    <ul>
-        {% for reclamation in reclamations %}
-            <li>
-                Reclamation ID: {{ reclamation.id }}
-                <a href="{{ path('app_reclamation_respond', {'id': reclamation.id}) }}" class="btn btn-primary">Respond</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary text-center rounded p-4">
+            <div class="d-flex align-items-center justify-content-between mb-4">
+                <h6 class="mb-0">List of Reclamations</h6>
+            </div>
+            <div class="table-responsive">
+                <table class="table text-start align-middle table-bordered table-hover mb-0">
+                    <thead>
+                        <tr class="text-white">
+                            <th scope="col">Reclamation ID</th>
+                            <th scope="col">Objet</th>
+                            <th scope="col">Type de Reclamation</th>
+                            <th scope="col">Description</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for reclamation in reclamations %}
+                            {% if reclamation.reponse is null %} {# To only show the reclamations that don't have answers #}
+                                <tr>
+                                    <td>{{ reclamation.id }}</td>
+                                    <td>{{ reclamation.objet }}</td>
+                                    <td>{{ reclamation.typeDeReclamation }}</td>
+                                    <td>{{ reclamation.descriptionReclamation }}</td>
+                                    <td>{{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</td>
+                                    <td>
+                                        <a href="{{ path('app_reclamation_respond', {'id': reclamation.id}) }}" class="btn btn-primary">Respond</a>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

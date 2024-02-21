@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReponseRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ReponseRepository::class)]
 class Reponse
@@ -18,9 +19,13 @@ class Reponse
     private ?Reclamation $id_reclamation = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"Le statut ne peut pas être vide.")]
+    #[Assert\Length(max:255, maxMessage:"Le statut ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $status = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank(message:"La décision ne peut pas être vide.")]
+    #[Assert\Length(max:255, maxMessage:"La décision ne peut pas dépasser {{ limit }} caractères.")]
     private ?string $decision = null;
 
     public function getId(): ?int

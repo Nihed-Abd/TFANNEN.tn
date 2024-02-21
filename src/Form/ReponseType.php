@@ -14,7 +14,9 @@ class ReponseType extends AbstractType
         $builder
             ->add('status')
             ->add('decision')
-            ->add('id_reclamation')
+            ->add('id_reclamation', null, [
+                'disabled' => true,
+            ])
         ;
     }
 
