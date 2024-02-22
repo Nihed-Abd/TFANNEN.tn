@@ -75,8 +75,9 @@ class UserController extends AbstractController
     public function displayUsersForm(EntityManagerInterface $entityManager): Response
 {
     $users = $entityManager->getRepository(User::class)->createQueryBuilder('u')
-    ->where('u.roles LIKE :role')
-    ->setParameter('role', '%"ROLE_USER"%')
+    ->where('u.roles LIKE :roleUser OR u.roles LIKE :roleDesigner')
+    ->setParameter('roleUser', '%"ROLE_USER"%')
+    ->setParameter('roleDesigner', '%"ROLE_DESIGNER"%')
     ->getQuery()
     ->getResult();
 
@@ -153,6 +154,112 @@ public function editAdminProfile(Request $request, UserPasswordEncoderInterface 
     }
 
     return $this->render('user/AdminProfile.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+#[Route("/editUserProfile", name: "edit_user")]
+public function editUserProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+
+    $form = $this->createFormBuilder($user)
+        ->add('username', TextType::class, [
+            'label' => 'User Name',
+        ])
+        ->add('email', EmailType::class, [
+            'label' => 'Email',
+            'attr' => ['id' => 'emailInput'],
+            'required' => true,
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/',
+                    'message' => 'The email "{{ value }}" is not a valid email.',
+                ]),
+            ],
+        ])
+        ->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => 'The password fields must match.',
+            'options' => ['attr' => ['class' => 'password-field']],
+            'required' => false, // Allow empty password
+            'first_options'  => ['label' => 'Enter New Password'],
+            'second_options' => ['label' => 'Confirm Password'],
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Only encode and set the password if it's not empty
+        $password = $form->get('password')->getData();
+        if ($password !== null && !empty($password)) {
+            $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($encodedPassword);
+        }
+
+        // Persist changes to the database
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('base_user');
+    }
+
+    return $this->render('user/UserProfile.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+#[Route("/editDesignerProfile", name: "edit_designer")]
+public function editDesignerProfile(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager): Response
+{
+    $user = $this->getUser();
+
+    $form = $this->createFormBuilder($user)
+        ->add('username', TextType::class, [
+            'label' => 'User Name',
+        ])
+        ->add('email', EmailType::class, [
+            'label' => 'Email',
+            'attr' => ['id' => 'emailInput'],
+            'required' => true,
+            'constraints' => [
+                new Regex([
+                    'pattern' => '/^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/',
+                    'message' => 'The email "{{ value }}" is not a valid email.',
+                ]),
+            ],
+        ])
+        ->add('password', RepeatedType::class, [
+            'type' => PasswordType::class,
+            'invalid_message' => 'The password fields must match.',
+            'options' => ['attr' => ['class' => 'password-field']],
+            'required' => false, // Allow empty password
+            'first_options'  => ['label' => 'Enter New Password'],
+            'second_options' => ['label' => 'Confirm Password'],
+        ])
+        ->getForm();
+
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        // Only encode and set the password if it's not empty
+        $password = $form->get('password')->getData();
+        if ($password !== null && !empty($password)) {
+            $encodedPassword = $passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($encodedPassword);
+        }
+
+        // Persist changes to the database
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('base_designer');
+    }
+
+    return $this->render('user/DesignerProfile.html.twig', [
         'form' => $form->createView(),
     ]);
 }

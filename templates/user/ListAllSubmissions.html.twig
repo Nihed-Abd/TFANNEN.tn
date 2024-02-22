@@ -1,6 +1,6 @@
 {% extends 'user/baseAdmin.html.twig' %}
 
-{% block title %}List of Users{% endblock %}
+{% block title %}List of Requests{% endblock %}
  {% block header %}
     <div class="container-fluid position-relative d-flex p-0">
         <!-- Spinner Start -->
@@ -34,7 +34,7 @@
                         <a href="#" class="nav-item nav-link active" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Users</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="{{ path('list_all_users') }}" class="dropdown-item">Users</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
+                            <a href="{{ path('list_all_submissions') }}" class="dropdown-item">Users Submissions</a>
                             <a href="element.html" class="dropdown-item">Other Elements</a>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
 </style>
     <div class="container">
         <h1 class="page-title" style="  text-align: center;
-            color: #EB1616;">List of Users</h1>
+            color: #EB1616;">List of Requests</h1>
 
         <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
             <thead>
