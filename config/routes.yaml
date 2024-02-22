@@ -1,10 +1,10 @@
 app_reclamation_index:
-    path: /reclamation
+    path: /reclamation/{user_id}
     controller: App\Controller\ReclamationController::index
     methods: GET
 
 app_reclamation_new:
-    path: /reclamation/new
+    path: /reclamation/new/{user_id}
     controller: App\Controller\ReclamationController::new
     methods: [GET, POST]
 
@@ -14,7 +14,7 @@ app_reclamation_show:
     methods: GET
 
 app_reclamation_edit:
-    path: /reclamation/{id}/edit
+    path: /reclamation/{user_id}/{id}/edit
     controller: App\Controller\ReclamationController::edit
     methods: [GET, POST]
 

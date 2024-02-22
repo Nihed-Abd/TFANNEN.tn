@@ -25,7 +25,6 @@ class ReclamationType extends AbstractType
                 // Optional: disable the date input to prevent users from modifying it
                 'disabled' => true,
             ])
-            ->add('User')
         ;
 
         // Add an event listener to set the date field with the current date

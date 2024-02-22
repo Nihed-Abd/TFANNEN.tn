@@ -51,12 +51,15 @@ class ReclamationRepository extends ServiceEntityRepository
      *
      * @return Reclamation[]
      */
-    public function findAllWithResponses(): array
+    public function findAllWithResponsesByUserId($user_id): array
     {
         return $this->createQueryBuilder('r')
-            ->leftJoin('r.reponse', 'reponse') // Assuming the property name for the association is "reponse"
+            ->leftJoin('r.reponse', 'reponse')
             ->addSelect('reponse')
+            ->andWhere('r.user = :user_id')
+            ->setParameter('user_id', $user_id)
             ->getQuery()
             ->getResult();
     }
+    
 }

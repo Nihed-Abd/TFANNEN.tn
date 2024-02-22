@@ -38,8 +38,7 @@
                         {{ form_row(form.type_de_reclamation, {'attr': {'placeholder': 'Type_De_Reclamation...'}}) }}
                         {{ form_row(form.description_reclamation, {'attr': {'placeholder': 'Description_Reclamation...'}}) }}
                         {{ form_row(form.date) }}
-                        {{ form_row(form.User) }}
-                        <div class="radio-btn mt-2">
+                            <div class="radio-btn mt-2">
                             <span></span>
                             <p>I accept your terms & conditions</p>
                         </div>
@@ -51,5 +50,5 @@
         </div>
     </section>
 
-    <a href="{{ path('app_reclamation_index') }}">back to list</a>
+    <a href="{{ path('app_reclamation_index', {'user_id': user_id}) }}">back to list</a>
 {% endblock %}
