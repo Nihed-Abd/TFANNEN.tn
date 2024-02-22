@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+
 
 
 #[Route('/design')]
@@ -92,41 +94,44 @@ public function showClient(?Design $design, $user_id): Response
 
                 //* Add Design *//
                 #[Route('/designer/{users_id}/new', name: 'app_design_new', methods: ['GET', 'POST'])]
-                public function newDesign(int $users_id, Request $request, EntityManagerInterface $entityManager): Response
-                {
-                    $design = new Design();
-                    $user = $this->getDoctrine()->getRepository(User::class)->find($users_id);
-                    if (!$user) {
-                        throw $this->createNotFoundException('User not found');
-                    }
-                    $design->setUsers($user);
-                    
-                    $form = $this->createForm(DesignType::class, $design);
-                    $form->handleRequest($request);
-                
-                    if ($form->isSubmitted() && $form->isValid()) {
-                        $pictureFile = $form['picture']->getData();
-                        if ($pictureFile) {
-                            $filename = md5(uniqid()) . '.' . $pictureFile->guessExtension();
-                            $pictureFile->move(
-                                $this->getParameter('pictures_directory'),
-                                $filename
-                            );
-                            $design->setPicture($filename);
-                        }
-                
-                        $entityManager->persist($design);
-                        $entityManager->flush();
-                
-                        return $this->redirectToRoute('app_design_by_designer', ['users_id' => $users_id], Response::HTTP_SEE_OTHER);
-                    }
-                
-                    return $this->renderForm('design/DesignerVue/new.html.twig', [
-                        'design' => $design,
-                        'form' => $form,
-                        'users_id' => $users_id,
-                    ]);
-                }
+                public function newDesign(int $users_id, Request $request, EntityManagerInterface $entityManager, ValidatorInterface $validator): Response
+{
+    $design = new Design();
+    $user = $this->getDoctrine()->getRepository(User::class)->find($users_id);
+    if (!$user) {
+        throw $this->createNotFoundException('User not found');
+    }
+    $design->setUsers($user);
+    
+    $form = $this->createForm(DesignType::class, $design);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $pictureFile = $form['picture']->getData();
+        if ($pictureFile) {
+            $filename = md5(uniqid()) . '.' . $pictureFile->guessExtension();
+            $pictureFile->move(
+                $this->getParameter('pictures_directory'),
+                $filename
+            );
+            $design->setPicture($filename);
+        }
+
+        $entityManager->persist($design);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_design_by_designer', ['users_id' => $users_id], Response::HTTP_SEE_OTHER);
+    }
+
+    $errors = $validator->validate($design);
+
+    return $this->renderForm('design/DesignerVue/new.html.twig', [
+        'design' => $design,
+        'form' => $form,
+        'users_id' => $users_id,
+        'errors' => $errors, 
+    ]);
+}
                 
                 
           //* Design Details in store*//

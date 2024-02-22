@@ -13,6 +13,7 @@
 {% block banner_subtitle %}
     Fill Free to submit your feedback !
 {% endblock %}
+
 {% block body %}
     <!-- Your page content goes here -->
     <div class="container">
@@ -24,21 +25,25 @@
                             
                             <div class="col-lg-6">
                                 <div class="form-area">
-                                   
-{{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
-<div class="col-12">
-    {{ form_label(form.avis, 'Avis', {'label_attr': {'class': 'form-label'}}) }}
-    {{ form_widget(form.avis, {'attr': {'class': 'form-control'}}) }}
-</div>
-<div class="col-12">
-    {{ form_label(form.commentaire, 'Commentaire', {'label_attr': {'class': 'form-label'}}) }}
-    {{ form_widget(form.commentaire, {'attr': {'class': 'form-control'}}) }}
-</div>
-<div class="col-12">
-    <button class="mt-40 btn-one" type="submit"><span>Submit</span></button>
-</div>
-{{ form_end(form) }}
-
+                                    {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+                                    <div class="col-12">
+                                        {{ form_label(form.avis, 'Avis', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.avis, {'attr': {'class': 'form-control'}}) }}
+                                        {% if form_errors(form.avis) %}
+                                            <span class="text-danger">{{ form_errors(form.avis) }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.commentaire, 'Commentaire', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.commentaire, {'attr': {'class': 'form-control'}}) }}
+                                        {% if form_errors(form.commentaire) %}
+                                            <span class="text-danger">{{ form_errors(form.commentaire) }}</span>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="mt-40 btn-one" type="submit"><span>Submit</span></button>
+                                    </div>
+                                    {{ form_end(form) }}
                                 </div>
                             </div>
                         </div>

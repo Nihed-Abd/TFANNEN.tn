@@ -28,21 +28,17 @@ class AvisController extends AbstractController
     #[Route('/new/{design_id}/{user_id}', name: 'app_avis_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, int $design_id, int $user_id): Response
     {
-        // Fetch the Design entity based on the design_id
         $design = $this->getDoctrine()->getRepository(Design::class)->find($design_id);
         
         if (!$design) {
             throw $this->createNotFoundException('Design not found');
         }
         
-        // Create a new Avis entity and set the design
         $avi = new Avis();
         $avi->setDesign($design);
         
-        // Create the form with the Avis entity
         $form = $this->createForm(AvisType::class, $avi);
         
-        // Handle form submission
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
@@ -55,7 +51,7 @@ class AvisController extends AbstractController
         return $this->renderForm('avis/ClientVue/new.html.twig', [
             'avi' => $avi,
             'form' => $form,
-            'user_id' => $user_id, // Pass the user_id variable to the template
+            'user_id' => $user_id,
         ]);
     }
     
@@ -63,10 +59,8 @@ class AvisController extends AbstractController
     #[Route('/admin/design/{id}/avis', name: 'admin_design_avis')]
         public function showDesignAvis(int $id, AvisRepository $avisRepository): Response
     {
-    // Fetch the avis related to the design_id
     $avis = $avisRepository->findBy(['design' => $id]);
 
-    // Render the twig template with the avis list
     return $this->render('avis/AdminVue/AdminAvis.html.twig', [
         'avis' => $avis,
             ]);
@@ -79,7 +73,6 @@ class AvisController extends AbstractController
         {
         $avis = $avisRepository->findBy(['design' => $id]);
 
-        // Render the twig template with the avis list
         return $this->render('avis/designerAvis.html.twig', [
             'avis' => $avis,
                 ]);

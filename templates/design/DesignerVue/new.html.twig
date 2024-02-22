@@ -22,30 +22,44 @@
                 <section class="contact pt-130 pb-130">
                     <div class="container">
                         <div class="row g-4">
-                            
                             <div class="col-lg-6">
                                 <div class="form-area">
                                     {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
                                     <div class="col-12">
                                         {{ form_label(form.titre, 'Title', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+                                        {% for error in form.titre.vars.errors %}
+                                            <div class="alert alert-danger">{{ error.message }}</div>
+                                        {% endfor %}
                                     </div>
                                     <div class="col-12">
                                         {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                        {% for error in form.description.vars.errors %}
+                                            <div class="alert alert-danger">{{ error.message }}</div>
+                                        {% endfor %}
                                     </div>
                                     <div class="col-12">
                                         {{ form_label(form.prix, 'Price', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                                        {% for error in form.prix.vars.errors %}
+                                            <div class="alert alert-danger">{{ error.message }}</div>
+                                        {% endfor %}
                                     </div>
                                     <div class="col-12">
                                         {{ form_label(form.categorie, 'Category', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                        {% for error in form.categorie.vars.errors %}
+                                            <div class="alert alert-danger">{{ error.message }}</div>
+                                        {% endfor %}
                                     </div>
-                               <div class="col-12">
-    {{ form_label(form.picture, 'Picture', {'label_attr': {'class': 'form-label'}}) }}
-    {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}
-</div>
+                                    <div class="col-12">
+                                        {{ form_label(form.picture, 'Picture', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}
+                                        {% for error in form.picture.vars.errors %}
+                                            <div class="alert alert-danger">{{ error.message }}</div>
+                                        {% endfor %}
+                                    </div>
                                     <div class="col-12">
                                         <button class="mt-40 btn-one" type="submit"><span>ADD IT IN THE STORE</span></button>
                                     </div>

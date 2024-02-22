@@ -7,24 +7,46 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 class DesignType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('titre')
-            ->add('description')
-            ->add('prix')
-            ->add('categorie')
-            ->add('picture', FileType::class, [
-                'label' => 'Picture',
-                'mapped' => false, // This tells Symfony not to try to map this field to an entity property
-                'required' => false, // Set to false if the field is not required
-            ]);
-        ;
-    }
-
+        ->add('titre', null, [
+            'constraints' => [
+                new NotBlank(['message' => 'Title cannot be blank']), 
+                new Length([
+                    'min' => 3,
+                    'minMessage' => 'Title must be at least {{ limit }} characters long',
+                ]), 
+            ],
+        ])
+        ->add('description', null, [
+            'constraints' => [
+                new NotBlank(['message' => 'Description cannot be blank']), 
+            ],
+        ])
+        ->add('prix', null, [
+            'constraints' => [
+                new NotBlank(['message' => 'Price cannot be blank']), 
+            ],
+        ])
+        ->add('categorie', null, [
+            'constraints' => [
+                new NotBlank(['message' => 'Category cannot be blank']), 
+            ],
+        ])
+        ->add('picture', FileType::class, [
+            'label' => 'Picture',
+            'mapped' => false, 
+            'required' => true, 
+            'constraints' => [
+                new NotBlank(['message' => 'Please upload a picture']),
+            ],
+        ]);
+}
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
