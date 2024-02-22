@@ -22,7 +22,8 @@ class Avis
    
     #[ORM\ManyToOne(inversedBy: 'avis', targetEntity: Design::class)]
     private ?Design $design = null;
-    
+
+   
     public function getId(): ?int
     {
         return $this->id;
@@ -63,4 +64,6 @@ class Avis
 
         return $this;
     }
+
+  
 }

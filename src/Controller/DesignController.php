@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Design;
 use App\Entity\Avis;
+use App\Entity\User;
 use App\Form\DesignType;
 use App\Repository\DesignRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -17,23 +18,81 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 #[Route('/design')]
 class DesignController extends AbstractController
 {
-    #[Route('/', name: 'app_design_index', methods: ['GET'])]
-    public function index(DesignRepository $designRepository): Response
+    //////////////////////////* Visitor Functions *//////////////////////////
+   
+   //* Design Details *//
+   #[Route('/{design}', name: 'visitor_design_show', methods: ['GET'], requirements: ['design' => '\d+'])]
+   public function showVisitor(Design $design): Response
+   {
+       return $this->render('design/VisitorVue/VisitorShow.html.twig', [
+           'design' => $design,
+       ]);
+   }
+   
+    //* Store *//
+    #[Route('/', name: 'Visitor_design_index', methods: ['GET'])]
+    public function indexVisitor(DesignRepository $designRepository): Response
     {
-        return $this->render('design/index.html.twig', [
+        return $this->render('design/VisitorVue/VisitorIndex.html.twig', [
             'designs' => $designRepository->findAll(),
         ]);
     }
-    #[Route('/admin', name: 'admin_design_index', methods: ['GET'])]
-    public function adminIndex(DesignRepository $designRepository): Response
-    {
-        $designs = $designRepository->findAll();
-        dump($designs); // Check if $design is fetched correctly
-        return $this->render('design/designAdmin.html.twig', [
-            'designs' => $designs,
-        ]);   
-    }
 
+    //////////////////////////* Client Functions *///////////////////////////
+    #[Route('/client/{user_id}', name: 'app_design_index', methods: ['GET'])]
+public function indexClient(DesignRepository $designRepository, $user_id): Response
+{
+    $designs = $designRepository->findAll();
+    
+    return $this->render('design/ClientVue/index.html.twig', [
+        'designs' => $designs,
+        'user_id' => $user_id,
+    ]);
+}
+
+
+    
+#[Route('/client/{user_id}/{design}', name: 'app_design_show', methods: ['GET'], requirements: ['id' => '\d+'], defaults: ['design' => null])]
+public function showClient(?Design $design, $user_id): Response
+{
+    return $this->render('design/ClientVue/show.html.twig', [
+        'design' => $design,
+        'user_id' => $user_id,
+    ]);
+}
+
+
+    ////////////////////////////* Designer Functions *///////////////////////////
+
+            //* Store *//
+            #[Route('/designer/{users_id}', name: 'designer_design_index', methods: ['GET'])]
+            public function indexDesigner(int $users_id, DesignRepository $designRepository): Response
+            {
+                $designs = $designRepository->findAll();
+                return $this->render('design/DesignerVue/designerView.html.twig', [
+                    'designs' => $designs,
+                    'users_id' => $users_id, 
+                ]);
+            }
+
+            //* Own Store //*
+
+            #[Route('/designer/myStore/{users_id}', name: 'app_design_by_designer', methods: ['GET'])]
+            public function showStoreDesigner(int $users_id, DesignRepository $designRepository, Request $request): Response
+                    {
+                                $designs = $designRepository->findBy(['users' => $users_id]);
+
+                         if (!$designs) {
+                                 throw $this->createNotFoundException('No designs found for the user.');
+                                        }
+
+                                 return $this->render('design/DesignerVue/DesignerProduct.html.twig', [
+                                     'designs' => $designs,
+                                     'users_id' => $users_id,
+                                         ]);
+                    }
+
+                //* Add Design *//
    #[Route('/new', name: 'app_design_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -62,16 +121,25 @@ class DesignController extends AbstractController
             'design' => $design,
             'form' => $form,
         ]);
-    }
-
-    #[Route('/design/{id}', name: 'app_design_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(Design $design): Response
+    }           //* Design Details *//
+    #[Route('/designer/{users_id}/{design_id}', name: 'designer_design_show')]
+    public function showDesignDesigner(int $users_id ,int $design_id, DesignRepository $designRepository): Response
     {
-        return $this->render('design/show.html.twig', [
+        $design = $designRepository->find($design_id);
+    
+        if (!$design) {
+            throw $this->createNotFoundException('Design not found');
+        }
+    
+        return $this->render('design/DesignerVue/DesignerShopDetails.html.twig', [
             'design' => $design,
+            'users_id' => $users_id,
+
         ]);
     }
-
+    
+    
+    //*edit Design *//
     #[Route('/{id}/edit', name: 'app_design_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Design $design, EntityManagerInterface $entityManager): Response
     {
@@ -89,9 +157,20 @@ class DesignController extends AbstractController
             'form' => $form,
         ]);
     }
+     //////////////////////////////* Admin Functions *////////////////////////////////
+    
 
+     #[Route('/admin', name: 'admin_design_index', methods: ['GET'])]
+     public function adminIndex(DesignRepository $designRepository): Response
+     {
+         $designs = $designRepository->findAll();
+         dump($designs); // Check if $design is fetched correctly
+         return $this->render('design/designAdmin.html.twig', [
+             'designs' => $designs,
+         ]);   
+     }
     #[Route('/{id}', name: 'app_design_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
-    public function delete(Request $request, Design $design, EntityManagerInterface $entityManager): Response
+    public function AdminDelete(Request $request, Design $design, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
             $avisRepository = $entityManager->getRepository(Avis::class);

@@ -94,7 +94,7 @@
                         <a href="about.html">Home</a>
                     </li>
                        <li>
-                        <a href="about.html">Store</a>
+                            <a href="{{ path('app_design_index', {'user_id': user_id}) }}">Store</a>
                     </li>
                     <li>
                         <a href="#0">FeedBack <i class="fa-regular fa-angle-down"></i></a>
@@ -107,6 +107,11 @@
                             <li class="subtwohober">
                                 <a href="shop-2.html">
                                     Admin Answers
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="shop-2.html">
+                                    My Review
                                 </a>
                             </li>
                             
@@ -322,6 +327,7 @@
     <script src="{{ asset('assets/js/jquery.waypoints.js')}}"></script>
     <!-- Script Js -->
     <script src="{{ asset('assets/js/script.js')}}"></script>
+    
 {% endblock %}
 
 </body>

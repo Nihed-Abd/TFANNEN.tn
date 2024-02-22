@@ -1,0 +1,70 @@
+{% extends 'baseDesigner.html.twig' %}
+
+{% block title %}New Design - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+       Welcome To Our Store
+{% endblock %}
+
+{% block banner_subtitle %}
+   Shop
+{% endblock %}
+
+{% block body %}
+<section class="product-area pt-130 pb-130">
+            <div class="container">
+                <div class="pb-20 bor-bottom shop-page-wrp d-flex justify-content-between align-items-center mb-65">
+                    <p class="fw-600">Showing 1–12 of 17 results</p>
+                    <div class="short">
+                        <select name="shortList" id="shortList">
+                            <option value="0">Short by popularity</option>
+                            <option value="1">E-Cigarette</option>
+                            <option value="2">POP Extra</option>
+                            <option value="3">Charger Kit</option>
+                            <option value="4">100ml Nic</option>
+                            <option value="5">Salt Juice</option>
+                        </select>
+                    </div>
+                </div>
+    <div class="col-xl-9 col-lg-8">
+        <div class="row g-4">
+             {% for design in designs %}
+            <div class="col-xl-4 col-lg-6 col-md-6">
+                 <div class="product__item bor">
+                <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
+               <a href="{{ path('designer_design_show', {'users_id': users_id, 'design_id': design.id }) }}" class="product__image pt-20 d-block">
+    <img class="font-image" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+</a>
+
+
+                <div class="product__content">
+                    <h4 class="mb-15"><a class="primary-hover"  href="{{ path('designer_design_show', {'users_id': users_id, 'design_id': design.id }) }}">{{ design.titre }}</a></h4>
+                    <span class="primary-color">{{ design.prix }} DT</span>
+                    <div class="star mt-20">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                </div>
+                <a class="product__cart d-block bor-top" href="#0"><i class="fa-regular fa-cart-shopping primary-color me-1"></i> <span>Add to cart</span></a>
+                 </div>
+             </div>
+        {% else %}
+            <div class="col-12">
+            <p>Sorry ! No Product found , Visite us later </p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+</div>
+
+
+
+    <a href="{{ path('app_design_new') }}">Create new</a>
+{% endblock %}

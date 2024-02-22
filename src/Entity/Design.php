@@ -37,8 +37,11 @@ class Design
     private Collection $competitions;
 
     #[ORM\ManyToOne(inversedBy: 'designs')]
-    private ?User $users = null;
+#[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id')]
+private ?User $users = null;
 
+    
+    
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 

@@ -15,6 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/avis')]
 class AvisController extends AbstractController
 {
+
+
+    ////////////////////////* Client Functions *//////////////////////////
     #[Route('/', name: 'app_avis_index', methods: ['GET'])]
     public function index(AvisRepository $avisRepository): Response
     {
@@ -22,19 +25,8 @@ class AvisController extends AbstractController
             'avis' => $avisRepository->findAll(),
         ]);
     }
-    #[Route('/admin/design/{id}/avis', name: 'admin_design_avis')]
-        public function showDesignAvis(int $id, AvisRepository $avisRepository): Response
-    {
-    // Fetch the avis related to the design_id
-    $avis = $avisRepository->findBy(['design' => $id]);
-
-    // Render the twig template with the avis list
-    return $this->render('avis/AdminAvis.html.twig', [
-        'avis' => $avis,
-            ]);
-    }
-    #[Route('/new/{design_id}', name: 'app_avis_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, int $design_id): Response
+    #[Route('/new/{design_id}/{user_id}', name: 'app_avis_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, EntityManagerInterface $entityManager, int $design_id, int $user_id): Response
     {
         // Fetch the Design entity based on the design_id
         $design = $this->getDoctrine()->getRepository(Design::class)->find($design_id);
@@ -52,19 +44,47 @@ class AvisController extends AbstractController
         
         // Handle form submission
         $form->handleRequest($request);
-
+    
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($avi);
             $entityManager->flush();
-
-            return $this->redirectToRoute('app_design_show', ['id' => $design->getId()], Response::HTTP_SEE_OTHER);
+    
+            return $this->redirectToRoute('app_design_show', ['design' => $design_id, 'user_id' => $user_id], Response::HTTP_SEE_OTHER);
         }
-
-        return $this->renderForm('avis/new.html.twig', [
+    
+        return $this->renderForm('avis/ClientVue/new.html.twig', [
             'avi' => $avi,
             'form' => $form,
+            'user_id' => $user_id, // Pass the user_id variable to the template
         ]);
     }
+    
+    ///////////////////////* Admin Functions *//////////////////////////
+    #[Route('/admin/design/{id}/avis', name: 'admin_design_avis')]
+        public function showDesignAvis(int $id, AvisRepository $avisRepository): Response
+    {
+    // Fetch the avis related to the design_id
+    $avis = $avisRepository->findBy(['design' => $id]);
+
+    // Render the twig template with the avis list
+    return $this->render('avis/AdminAvis.html.twig', [
+        'avis' => $avis,
+            ]);
+    }
+
+
+ ///////////////////////////////* Designer Functions *////////////////////////////
+        #[Route('/designer/{users_id}/{design_id}/avis', name: 'designer_avis_show')]
+            public function showDesignerAvis(int $id, AvisRepository $avisRepository): Response
+        {
+        $avis = $avisRepository->findBy(['design' => $id]);
+
+        // Render the twig template with the avis list
+        return $this->render('avis/designerAvis.html.twig', [
+            'avis' => $avis,
+                ]);
+        }
+
 
     #[Route('/{id}', name: 'app_avis_show', methods: ['GET'])]
     public function show(Avis $avi): Response
