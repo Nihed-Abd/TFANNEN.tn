@@ -11,7 +11,7 @@
 {% endblock %}
 
 {% block banner_subtitle %}
-   dashbord
+   dashboard
 {% endblock %}
 
 {% block body %}
@@ -19,6 +19,8 @@
     <div class="container">
         <div class="pb-20 bor-bottom shop-page-wrp d-flex justify-content-between align-items-center mb-65">
             <p class="fw-600">Showing {{ designs|length }} results</p>
+                                <a href="{{ path('app_design_new', {'users_id': users_id}) }}" class="btn-one">Add New Design</a>
+
             <div class="short">
                 <select name="shortList" id="shortList">
                     <option value="0">Short by popularity</option>
@@ -36,11 +38,11 @@
                     <div class="col-xl-4 col-lg-6 col-md-6">
                         <div class="product__item bor">
                             <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
-                              <a  href="{{ path('designer_design_show', {'users_id': users_id, 'design_id': design.id }) }}" class="product__image pt-20 d-block">
+                              <a  href="{{ path('designer_ownDesign_show', {'users_id': users_id, 'design_id': design.id }) }}" class="product__image pt-20 d-block">
                                 <img class="font-image" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
                             </a>
                             <div class="product__content">
-                                <h4 class="mb-15"><a class="primary-hover"  href="{{ path('designer_design_show', {'users_id': users_id, 'design_id': design.id }) }}">{{ design.titre }}</a></h4>
+                                <h4 class="mb-15"><a class="primary-hover"  href="{{ path('designer_ownDesign_show', {'users_id': users_id, 'design_id': design.id }) }}">{{ design.titre }}</a></h4>
                                 <span class="primary-color">{{ design.prix }} DT</span>
                                 <div class="star mt-20">
                                     <i class="fa-solid fa-star"></i>
@@ -50,8 +52,13 @@
                                     <i class="fa-solid fa-star"></i>
                                 </div>
                                  <div>
-                    <a href="{{ path('app_design_edit', {'id': design.id}) }}" class="btn-one">Update</a>
-                    <a href="{{ path('app_design_delete', {'id': design.id}) }}" class="btn-two">Delete</a>
+<form action="{{ path('designer_design_delete', {'users_id': users_id, 'design_id': design.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?')">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ design.id) }}">
+    <button type="submit" class="btn-two">Delete</button>
+</form>   <a href="{{ path('app_design_edit', {'users_id': users_id, 'design_id': design.id }) }}" class="btn-one">Edit</a>
+
+
                 </div>
                             </div>
                         </div>
@@ -59,12 +66,12 @@
                 {% endfor %}
             {% else %}
                 <div class="col-12">
-                    <p>Sorry! No products found. Please visit us later.</p>
+                    <p>Store is empty. Would you like to add a new design?</p>
+                    <a href="{{ path('app_design_new', {'users_id': users_id}) }}" class="btn-one">Add New Design</a>
                 </div>
             {% endif %}
         </div>
     </div>
 </section>
 
-<a href="{{ path('app_design_new') }}">Create new</a>
 {% endblock %}

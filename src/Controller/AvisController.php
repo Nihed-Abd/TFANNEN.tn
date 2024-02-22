@@ -67,7 +67,7 @@ class AvisController extends AbstractController
     $avis = $avisRepository->findBy(['design' => $id]);
 
     // Render the twig template with the avis list
-    return $this->render('avis/AdminAvis.html.twig', [
+    return $this->render('avis/AdminVue/AdminAvis.html.twig', [
         'avis' => $avis,
             ]);
     }

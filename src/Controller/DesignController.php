@@ -82,9 +82,7 @@ public function showClient(?Design $design, $user_id): Response
                     {
                                 $designs = $designRepository->findBy(['users' => $users_id]);
 
-                         if (!$designs) {
-                                 throw $this->createNotFoundException('No designs found for the user.');
-                                        }
+                        
 
                                  return $this->render('design/DesignerVue/DesignerProduct.html.twig', [
                                      'designs' => $designs,
@@ -93,35 +91,45 @@ public function showClient(?Design $design, $user_id): Response
                     }
 
                 //* Add Design *//
-   #[Route('/new', name: 'app_design_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $design = new Design();
-        $form = $this->createForm(DesignType::class, $design);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $pictureFile = $form['picture']->getData();
-            if ($pictureFile) {
-                $filename = md5(uniqid()).'.'.$pictureFile->guessExtension();
-                $pictureFile->move(
-                    $this->getParameter('pictures_directory'),
-                    $filename
-                );
-                $design->setPicture($filename);
-            }
-
-            $entityManager->persist($design);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_design_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('design/new.html.twig', [
-            'design' => $design,
-            'form' => $form,
-        ]);
-    }           //* Design Details *//
+                #[Route('/designer/{users_id}/new', name: 'app_design_new', methods: ['GET', 'POST'])]
+                public function newDesign(int $users_id, Request $request, EntityManagerInterface $entityManager): Response
+                {
+                    $design = new Design();
+                    $user = $this->getDoctrine()->getRepository(User::class)->find($users_id);
+                    if (!$user) {
+                        throw $this->createNotFoundException('User not found');
+                    }
+                    $design->setUsers($user);
+                    
+                    $form = $this->createForm(DesignType::class, $design);
+                    $form->handleRequest($request);
+                
+                    if ($form->isSubmitted() && $form->isValid()) {
+                        $pictureFile = $form['picture']->getData();
+                        if ($pictureFile) {
+                            $filename = md5(uniqid()) . '.' . $pictureFile->guessExtension();
+                            $pictureFile->move(
+                                $this->getParameter('pictures_directory'),
+                                $filename
+                            );
+                            $design->setPicture($filename);
+                        }
+                
+                        $entityManager->persist($design);
+                        $entityManager->flush();
+                
+                        return $this->redirectToRoute('app_design_by_designer', ['users_id' => $users_id], Response::HTTP_SEE_OTHER);
+                    }
+                
+                    return $this->renderForm('design/DesignerVue/new.html.twig', [
+                        'design' => $design,
+                        'form' => $form,
+                        'users_id' => $users_id,
+                    ]);
+                }
+                
+                
+          //* Design Details in store*//
     #[Route('/designer/{users_id}/{design_id}', name: 'designer_design_show')]
     public function showDesignDesigner(int $users_id ,int $design_id, DesignRepository $designRepository): Response
     {
@@ -137,26 +145,76 @@ public function showClient(?Design $design, $user_id): Response
 
         ]);
     }
-    
-    
-    //*edit Design *//
-    #[Route('/{id}/edit', name: 'app_design_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    public function edit(Request $request, Design $design, EntityManagerInterface $entityManager): Response
+            //* store design show *//
+    #[Route('/designer/mystore/{users_id}/{design_id}', name: 'designer_ownDesign_show')]
+    public function showDesignDetailsOwnStore(int $users_id ,int $design_id, DesignRepository $designRepository): Response
     {
-        $form = $this->createForm(DesignType::class, $design);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_design_index', [], Response::HTTP_SEE_OTHER);
+        $design = $designRepository->find($design_id);
+    
+        if (!$design) {
+            throw $this->createNotFoundException('Design not found');
         }
-
-        return $this->renderForm('design/edit.html.twig', [
+    
+        return $this->render('design/DesignerVue/DesignerAvis.html.twig', [
             'design' => $design,
-            'form' => $form,
+            'users_id' => $users_id,
+
         ]);
     }
+    
+                //*edit Design *//
+                #[Route('/designer/{users_id}/{design_id}/edit', name: 'app_design_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+public function edit(int $users_id, int $design_id, Request $request, EntityManagerInterface $entityManager, DesignRepository $designRepository): Response
+{
+    $design = $designRepository->find($design_id);
+
+    if (!$design) {
+        throw $this->createNotFoundException('Design not found');
+    }
+
+    $form = $this->createForm(DesignType::class, $design);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_design_by_designer', ['users_id' => $users_id], Response::HTTP_SEE_OTHER);
+    }
+
+    return $this->renderForm('design/DesignerVue/edit.html.twig', [
+        'users_id' => $users_id,
+        'design' => $design,
+        'form' => $form,
+    ]);
+}
+
+                
+   //* delete *//
+   #[Route('/designer/{users_id}/delete/{design_id}', name: 'designer_design_delete', methods: ['POST'], requirements: ['design_id' => '\d+'])]
+public function designerDesignDelete(int $users_id, int $design_id, Request $request, EntityManagerInterface $entityManager): Response
+{
+    $designRepository = $entityManager->getRepository(Design::class);
+    $design = $designRepository->find($design_id);
+
+    if (!$design) {
+        throw $this->createNotFoundException('Design not found');
+    }
+
+    if ($this->isCsrfTokenValid('delete'.$design->getId(), $request->request->get('_token'))) {
+        $avisRepository = $entityManager->getRepository(Avis::class);
+        $avis = $avisRepository->findBy(['design' => $design]);
+        
+        foreach ($avis as $avi) {
+            $entityManager->remove($avi);
+        }
+        
+        $entityManager->remove($design);
+        $entityManager->flush();
+    }
+
+    return $this->redirectToRoute('app_design_by_designer', ['users_id' => $users_id], Response::HTTP_SEE_OTHER);
+}
+
      //////////////////////////////* Admin Functions *////////////////////////////////
     
 
@@ -165,7 +223,7 @@ public function showClient(?Design $design, $user_id): Response
      {
          $designs = $designRepository->findAll();
          dump($designs); // Check if $design is fetched correctly
-         return $this->render('design/designAdmin.html.twig', [
+         return $this->render('design/AdminVue/designAdmin.html.twig', [
              'designs' => $designs,
          ]);   
      }
