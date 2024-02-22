@@ -1,0 +1,318 @@
+{% extends 'base.html.twig' %}
+
+    {% block header %}
+    <div class="top__header pt-30 pb-30">
+        <div class="container">
+            <div class="top__wrapper">
+                <a href="index.html" class="main__logo">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo__image">
+                </a>
+                <div class="search__wrp">
+                    <input placeholder="Search for" aria-label="Search">
+                    <button><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div class="account__wrap">
+                    <div class="account d-flex align-items-center">
+                        <div class="user__icon">
+                            <a href="#0">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </div>
+                        <a href="#0" class="acc__cont">
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+<div class="cart d-flex align-items-center">
+    <span class="cart__icon">
+        <i class="fa-regular fa-cart-shopping"></i>
+    </span>
+    <a href="javascript:void(0);" onclick="redirectToNewRoute();" class="c__one" id="totprice" style="color: black;">
+        <span style="color: black;">
+            0.00 DNT
+        </span>
+    </a>
+    <span class="one" id="quantity">
+        0
+    </span>
+</div>
+                    <div class="flag__wrap">
+                        <div class="flag">
+                            <img src="{{ asset('assets/images/flag/tn.png')}}" alt="flag">
+                        </div>
+                        <select name="flag">
+                            <option value="0">
+                                Usa
+                            </option>
+                            <option value="1">
+                                Canada
+                            </option>
+                            <option value="2">
+                                Australia
+                            </option>
+                            <option value="3">
+                                Germany
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="header-bar d-lg-none">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="main-menu">
+                    <li>
+                        <a href="#0">Home <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="index.html">
+                                    Home One
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="index-light.html">
+                                    Home One Light
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="index-2.html">
+                                    Home Two
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="index-2-light.html">
+                                    Home Two Light
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="about.html">About Us</a>
+                    </li>
+                    <li>
+                        <a href="#0">Pages <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="shop.html">
+                                    Shop Leftbar
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="shop-2.html">
+                                    Shop Rightbar
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="shop-single.html">
+                                    Shop Single
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="cart.html">
+                                    Cart Page
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="checkout.html">
+                                    Checkout Page
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="register.html">
+                                    Register
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="login.html">
+                                    Login
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="error.html">
+                                    404 Error
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#0">Blog <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="blog.html">
+                                    Blog Stander
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="blog-grid.html">
+                                    Blog Grid
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="blog-list.html">
+                                    Blog List
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="blog-single.html">
+                                    Blog Single
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact Us</a>
+                    </li>
+                </ul>
+                <div class="shipping__item d-none d-sm-flex align-items-center">
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/picking.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Picking up?
+                            </p>
+                            <div class="items">
+                                <select class="form__select p-0">
+                                    <option value="1">
+                                        Select Store
+                                    </option>
+                                    <option value="2">
+                                        Store One
+                                    </option>
+                                    <option value="3">
+                                        Store Two
+                                    </option>
+                                    <option value="3">
+                                        Store Three
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/shipping.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Free Shipping <br> on order <strong>over $100</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+            {% endblock %}
+{% block body %}
+           <section class="product-area pt-130 pb-130 mt-130">
+            <div class="container">
+                <div
+                    class="product__wrp pb-30 mb-65 bor-bottom d-flex flex-wrap align-items-center justify-content-xl-between justify-content-center">
+                    <div class="section-header d-flex align-items-center wow fadeInUp" data-wow-delay=".1s">
+                        <span class="title-icon mr-10"></span>
+                        <h2>latest arrival products</h2>
+                    </div>
+                    <ul class="nav nav-pills mt-4 mt-xl-0">
+                        <li class="nav-item wow fadeInUp" data-wow-delay=".1s">
+                            <a href="#latest-item" data-bs-toggle="tab" class="nav-link px-4 active">
+                                latest item
+                            </a>
+                        </li>
+                        <li class="nav-item wow fadeInUp" data-wow-delay=".2s">
+                            <a href="#top-ratting" data-bs-toggle="tab" class="nav-link px-4 bor-left bor-right">
+                                top ratting
+                            </a>
+                        </li>
+                        <li class="nav-item wow fadeInUp" data-wow-delay=".3s">
+                            <a href="#featured-products" data-bs-toggle="tab" class="nav-link ps-4">
+                                featured products
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="latest-item" class="tab-pane fade show active">
+                        <div class="row g-4">
+                         {% for design in designs %}
+                            <div class="col-xxl-3 col-xl-4 col-md-6">
+                                <div class="product__item bor">
+                                    <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
+                                    <a href="shop-single.html" class="product__image pt-20 d-block">
+                                        <img class="font-image" src="{{ asset('assets/images/product/product-image1.png')}}"
+                                            alt="image">
+                                        <img class="back-image" src="{{ asset('assets/images/product/product-image3.png')}}"
+                                            alt="image">
+                                    </a>
+                                    <div class="product__content">
+                                        <h4 class="mb-15"><a class="primary-hover" href="shop-single.html">{{ design.titre }}</a></h4>
+                                        <span class="primary-color ml-10">{{ design.prix }} DNT</span>
+                                        <div class="star mt-20">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+
+                                    </div>
+                                    <a class="product__cart d-block bor-top" onclick="addToCart('{{ design.titre }}', '{{ design.prix }}'); return false;"><i
+                                            class="fa-regular fa-cart-shopping primary-color me-1"></i>
+                                        <span>Add to
+                                            cart</span></a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <script>
+    function addToCart(titre, prix) {
+        // Create a FormData object to send data via AJAX
+        var formData = new FormData();
+        formData.append('titre', titre);
+        formData.append('prix', prix);
+
+        // Update the quantity and total price directly without using the response
+        var cartQuantityElement = document.getElementById('quantity');
+        var cartTotalElement = document.getElementById('totprice');
+
+        if (cartQuantityElement && cartTotalElement) {
+            // Increment quantity by 1
+            cartQuantityElement.textContent = parseInt(cartQuantityElement.textContent) + 1;
+            
+            // Add the price to the total price
+            var currentTotalPrice = parseFloat(cartTotalElement.textContent.replace('DNT', ''));
+            var newTotalPrice = currentTotalPrice + parseFloat(prix);
+            cartTotalElement.textContent = newTotalPrice.toFixed(2) + 'DNT';
+        }
+
+        // Make a fetch request to your Symfony controller
+        fetch('{{ path('add_to_cart') }}', {
+            method: 'POST',
+            body: formData,
+        })
+        .catch(error => {
+            // Handle errors during the fetch request
+            console.error('Fetch error:', error);
+        });
+    }
+
+     function redirectToNewRoute() {
+             // Redirect to the new route
+        window.location.href = "{{ path('app_commande_new') }}";
+    }
+</script>
+
+{% endblock %}

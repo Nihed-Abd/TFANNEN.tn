@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% endblock %}
+
+{% block body %}
+  
+  
+
+
+                <section class="page-banner bg-image pt-130 pb-130">
+                <h1 class="mb-4">Liste Des Commandes </h1>
+            <div class="container-fluid pl-65 pr-65">
+                <div class="row g-4 justify-content-center">
+                        {% for commande in commandes %}
+        {% if commande.user == user %}
+                    <div class="col-xxl-6">
+                        <div class="blog__item-left">
+                            <div class="row g-4 align-items-center">
+                                <div class="col-md-6">
+                                    <div class="blog__item-left-content">
+                                        <h3>Adresse : {{ commande.adresse }}</h3>
+                                        <h3>Téléphone : {{ commande.numTel }}</h3>
+                                        <h3>Prix : {{ commande.prix }}</h3>
+                                        <h3>Prduits : {{ commande.produits }}</h3>
+                                         <a href="{{ path('app_commande_delete_f', {'id': commande.id}) }}" class="orange-button">
+                                             <i class="fas fa-plus mr-2"></i> Supprimer
+                                         </a>
+                                         <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="orange-button">
+                                             <i class="fas fa-plus mr-2"></i> Modifier
+                                         </a>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                                 {% endif %}
+    
+        {% endfor %}
+                </div>
+            </div>
+            <div class="container">
+                <div class="mt-65">
+                    <a class="blog-pegi" href="#0">01</a>
+                    <a class="blog-pegi active" href="#0">02</a>
+                    <a class="blog-pegi" href="#0">03</a>
+                    <a href="#0"><i class="fa-solid fa-arrow-right-long"></i></a>
+                </div>
+            </div>
+        </section>
+
+
+{% endblock %}
+
+

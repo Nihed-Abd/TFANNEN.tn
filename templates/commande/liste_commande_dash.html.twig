@@ -1,0 +1,40 @@
+{% extends 'baseAdmin.html.twig' %}
+
+
+ {% block body %}
+ 
+     <h1>Commande index</h1>
+    <div class="container-fluid pt-4 px-4">
+<div class="bg-secondary rounded-top p-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><h3>Id</h3></th>
+                <th><h3>Adresse</h3></th>
+                <th><h3>Num_tel</h3></th>
+                <th><h3>Prix</h3></th>
+                <th><h3>Produits</h3></th>
+                <th><h3>actions</h3></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for commande in commandes %}
+        
+            <tr>
+                <td><h6>{{ commande.id }}</h6></td>
+                <td><h6>{{ commande.adresse }}</h6></td>
+                <td><h6>{{ commande.numTel }}</h6></td>
+                <td><h6>{{ commande.prix }}</h6></td>
+                <td><h6>{{ commande.produits }}</h6></td>
+                <td>
+                    <a href="{{ path('app_commande_delete_b', {'id': commande.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 120px;height: 30px;">supprimer</a>
+                    <a href="{{ path('app_livraison_new', {'id': commande.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 100px;height: 30px;">livrer</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+</div> 
+  {% endblock %}

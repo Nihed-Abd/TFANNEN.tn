@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <section class="page-banner bg-image pt-130 pb-130">
+        <div class="container">
+            <div class="shopping-cart radius-10 bor sub-bg">
+                <div class="column-labels py-3 px-4 d-flex justify-content-between align-items-center fw-bold text-white text-uppercase">
+                    <label class="product-details">Design</label>
+                    <label class="product-price">Prix</label>
+                    <label class="product-price">produits</label>
+                    <label class="product-quantity">Quantite</label>
+                    <label class="product-line-price">Total</label>
+                </div>
+
+                    {% set productTotals = {} %}
+                    {% set cartTotal = 0 %}
+                    {% set prods = "" %}
+                    {% for item in cartData %}
+                    {% set productTitle = item.titre %}
+                    {% set productPrice = item.prix %}
+                    {% set productQuantity = productTotals[productTitle]['quantity'] ?? 0 %}
+                    {% set productTotal = productTotals[productTitle]['total'] ?? 0 %}
+
+                    {# Increment quantity and calculate total #}
+                    {% set productQuantity = productQuantity + 1 %}
+                    {% set productTotal = productTotal + productPrice %}
+                    {% set productTotals = productTotals|merge({(productTitle): {'quantity': productQuantity, 'total': productTotal, 'price': productPrice}}) %}
+                    {% set cartTotal = cartTotal + productPrice %}
+                {% endfor %}
+
+                {% for productTitle, productInfo in productTotals %}
+                    <div class="product p-4 bor-top bor-bottom d-flex justify-content-between align-items-center">
+                        <div class="product-details d-flex align-items-center">
+                            <img src="{{ asset('assets/images/shop/01.jpg')}}" alt="image">
+                            <h4 class="ps-4 text-capitalize">{{ productTitle }}</h4>
+                        </div>
+                        <div class="product-price">{{ productInfo.price }}</div>
+                        <div class="product-quantity">
+                            <input style="color: white;" type="number" value="{{ productInfo.quantity }}" min="1" disabled>
+                        </div>
+                        <div class="product-line-price">{{ productInfo.total }}</div>
+                    </div>
+                    {% set prods = prods ~ productTitle ~ ":" ~ productInfo.quantity ~ ", " %}
+                {% endfor %}
+
+                <div class="totals">
+                    <div class="totals-item theme-color float-end mt-20">
+                        <span class="fw-bold text-uppercase py-2">cart total =</span>
+                        <div class="totals-value d-inline py-2 pe-2" id="cart-subtotal">{{cartTotal}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+ <section class="checkout-area pt-130 pb-130">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="checkout__item-left sub-bg">
+                        <h3 class="mb-40">Ajouter commande</h3>
+                        {{ form_start(form,{'attr': {'class': 'form','novalidate':'novalidate'}}) }}
+                            <div class="mb-10">
+                                {{ form_label(form.adresse) }}
+                                {{ form_widget(form.adresse, {'attr': {'class': 'mb-20', 'placeholder': 'Adresse'}}) }}
+                                {{ form_errors(form.adresse) }}
+                            </div>
+
+                            <div class="mb-10">
+                                {{ form_label(form.num_tel) }}
+                                {{ form_widget(form.num_tel, {'attr': {'class': 'mb-20', 'placeholder': 'Numéro téléphone'}}) }}
+                                {{ form_errors(form.num_tel) }}
+                            </div>
+                            <div class="mb-10">
+                                {{ form_label(form.prix) }}
+                                {{ form_widget(form.prix, {'attr': {'readonly': 'readonly', 'value': cartTotal}}) }}
+                                {{ form_errors(form.prix) }}
+                            </div>
+                             <div class="mb-10">
+                                {{ form_label(form.produits) }}
+                                {{ form_widget(form.produits, {'attr': {'readonly': 'readonly', 'value': prods}}) }}
+                            </div>
+                            
+                               <button class="orange-button" type="submit">
+                                  <i class="fas fa-plus mr-2"></i> {{button_label|default('Create Commande')}}
+                                </button>
+
+
+
+                            
+
+                            
+
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+{% endblock %}

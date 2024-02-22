@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Design{% endblock %}
+
+{% block body %}
+
+    <h1>Design</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ design.id }}</td>
+            </tr>
+            <tr>
+                <th>Titre</th>
+                <td>{{ design.titre }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ design.description }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ design.prix }}</td>
+            </tr>
+            <tr>
+                <th>Categorie</th>
+                <td>{{ design.categorie }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_design_index') }}">back to list</a>
+
+    <a href="{{ path('app_design_edit', {'id': design.id}) }}">edit</a>
+
+    {{ include('design/_delete_form.html.twig') }}
+{% endblock %}

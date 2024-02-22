@@ -1,0 +1,38 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Livraison{% endblock %}
+
+{% block body %}
+    <h1>Livraison</h1>
+    <div class="container-fluid pt-4 px-4">
+<div class="bg-secondary rounded-top p-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><h3>Id</h3></th>
+                <th><h3>Facture</h3></th>
+                <th><h3>Livreur</h3></th>
+                <th><h3>actions</h3></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for livraison in livraisons %}
+            <tr>
+                <td><h6>{{ livraison.id }}</h6></td>
+                <td><h6>{{ livraison.facture }}</h6></td>
+                <td><h6>{{ livraison.livreur }}</h6></td>
+                <td>
+                    <a href="{{ path('app_livraison_show', {'id': livraison.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 100px;height: 30px;">Afficher</a>
+                    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 100px;height: 30px;">Modifier</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>    
+{% endblock %}

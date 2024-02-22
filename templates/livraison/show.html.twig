@@ -1,0 +1,35 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Livraison{% endblock %}
+
+{% block body %}
+    <h1 style="margin-left:45rem;">Livraison</h1>
+    <div class="container-fluid pt-4 px-4">
+     <div class="bg-secondary rounded-top p-4">
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th><h3>Id</h3></th>
+                <td><h5>{{ livraison.id }}</h5></td>
+            </tr>
+            <tr>
+                <th><h3>Facture</h3></th>
+                <td><h5>{{ livraison.facture }}</h5></td>
+            </tr>
+            <tr>
+                <th><h3>Livreur</h3></th>
+                <td><h5>{{ livraison.livreur }}</h5></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_livraison_index') }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 250px;height: 30px;">Retour</a>
+
+    <a href="{{ path('app_livraison_edit', {'id': livraison.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 250px;height: 30px;">Modifier</a>
+ 
+    <a href="{{ path('app_livraison_delete', {'id': livraison.id}) }}" class="btn btn-lg btn-primary btn-lg-square" style="width: 250px;height: 30px;">supprimer</a>
+    
+    </div>
+     </div>
+{% endblock %}
