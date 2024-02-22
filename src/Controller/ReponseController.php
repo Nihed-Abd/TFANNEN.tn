@@ -92,8 +92,8 @@ class ReponseController extends AbstractController
             $entityManager->persist($reponse);
             $entityManager->flush();
 
-            // Optionally, redirect to the reclamation show page after responding
-            return $this->redirectToRoute('app_reclamation_show', ['id' => $reclamation->getId()]);
+            
+            return $this->redirectToRoute('app_reponse_index');
         }
 
         return $this->renderForm('reponse/respond.html.twig', [
