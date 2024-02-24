@@ -6,14 +6,6 @@ use App\Entity\Reponse;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Reponse>
- *
- * @method Reponse|null find($id, $lockMode = null, $lockVersion = null)
- * @method Reponse|null findOneBy(array $criteria, array $orderBy = null)
- * @method Reponse[]    findAll()
- * @method Reponse[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- */
 class ReponseRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
@@ -21,28 +13,27 @@ class ReponseRepository extends ServiceEntityRepository
         parent::__construct($registry, Reponse::class);
     }
 
-//    /**
-//     * @return Reponse[] Returns an array of Reponse objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Find responses by search query (combining status and decision).
+     *
+     * @param string $searchQuery The search query containing status and decision
+     * @return Reponse[] The array of Reponse objects matching the search criteria
+     */
+    public function findBySearchQuery(string $searchQuery): array
+    {
+        // Split the search query into status and decision values
+        $keywords = explode(' ', $searchQuery);
 
-//    public function findOneBySomeField($value): ?Reponse
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Use the exploded values to construct the query
+        $queryBuilder = $this->createQueryBuilder('r');
+
+        foreach ($keywords as $index => $keyword) {
+            $queryBuilder
+                ->andWhere('r.status LIKE :keyword'.$index)
+                ->orWhere('r.decision LIKE :keyword'.$index)
+                ->setParameter('keyword'.$index, '%'.$keyword.'%');
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 }

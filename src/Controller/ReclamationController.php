@@ -108,12 +108,20 @@ public function new(Request $request, EntityManagerInterface $entityManager, $us
     
 
     #[Route('/reclamations', name: 'app_reclamation_list', methods: ['GET'])]
-    public function listReclamations(ReclamationRepository $reclamationRepository): Response
+    public function listReclamations(Request $request, ReponseRepository $reponseRepository, ReclamationRepository $reclamationRepository): Response
     {
-        $reclamations = $reclamationRepository->findAll();
+        $searchQuery = $request->query->get('search');
+    
+        if ($searchQuery) {
+            // Assuming your object and type fields are properties of the Reclamation entity
+            $reclamations = $reclamationRepository->findByObjectOrType($searchQuery, $searchQuery);
+        } else {
+            $reclamations = $reclamationRepository->findAll();
+        }
     
         return $this->render('reponse/list.html.twig', [
             'reclamations' => $reclamations,
         ]);
     }
+
 }

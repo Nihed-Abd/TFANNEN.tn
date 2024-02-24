@@ -30,7 +30,6 @@
     <!-- Template Stylesheet -->
     <link href="{{ asset('assetsAdmin/css/style.css')}}" rel="stylesheet">
         {% endblock %}
-
 </head>
 
 <body>
@@ -49,7 +48,7 @@
         <div class="sidebar pe-4 pb-3">
             <nav class="navbar bg-secondary navbar-dark">
                 <a href="index.html" class="navbar-brand mx-4 mb-3">
-                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>DarkPan</h3>
+                    <h3 class="text-primary"><i class="fa fa-user-edit me-2"></i>TFANNEN</h3>
                 </a>
                 <div class="d-flex align-items-center ms-4 mb-4">
                     <div class="position-relative">
@@ -62,7 +61,7 @@
                     </div>
                 </div>
                 <div class="navbar-nav w-100">
-                    <a href="index.html" class="nav-item nav-link active"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
+                    <a href="index.html" class="nav-item nav-link inactive"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Users</a>
                         <div class="dropdown-menu bg-transparent border-0">
@@ -80,7 +79,7 @@
                         </div>
                     </div>
                      <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-keyboard me-2"></i>FeedBacks</a>
+                        <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="fa fa-keyboard me-2"></i>FeedBacks</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="{{ path('app_reclamation_list') }}" class="dropdown-item">user's FeedBacks</a>
                             <a href="{{ path('app_reponse_index') }}" class="dropdown-item">Answers</a>
@@ -123,9 +122,24 @@
                 <a href="#" class="sidebar-toggler flex-shrink-0">
                     <i class="fa fa-bars"></i>
                 </a>
-                <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+                <!-- Search form -->
+                <form id="searchForm" method="GET" class="ms-auto d-flex align-items-center">
+                    <div class="input-group">
+                        <input class="form-control bg-dark border-0" type="search" placeholder="Search" name="search">
+                        <button id="searchButton" class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                    <div class="form-check form-check-inline mx-3">
+                        <input class="form-check-input" type="radio" name="searchOption" id="searchOptionReponse" value="Reponse">
+                        <label class="form-check-label" for="searchOptionReponse">Reponse</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="searchOption" id="searchOptionReclamation" value="Reclamation">
+                        <label class="form-check-label" for="searchOptionReclamation">Reclamation</label>
+                    </div>
                 </form>
+                
+                
+                
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -213,7 +227,7 @@
                 <div class="bg-secondary rounded-top p-4">
                     <div class="row">
                         <div class="col-12 col-sm-6 text-center text-sm-start">
-                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                            &copy; <a href="TFANNEN"></a>, All Right Reserved. 
                         </div>
                         <div class="col-12 col-sm-6 text-center text-sm-end">
                             <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
@@ -244,6 +258,42 @@
     <script src="{{ asset('assetsAdmin/lib/tempusdominus/js/moment.min.js')}}"></script>
     <script src="{{ asset('assetsAdmin/lib/tempusdominus/js/moment-timezone.min.js')}}"></script>
     <script src="{{ asset('assetsAdmin/lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js')}}"></script>
+
+    <script>
+        // Get the form and button elements
+        const searchForm = document.getElementById('searchForm');
+        const searchButton = document.getElementById('searchButton');
+    
+        // Function to handle form submission
+        searchForm.addEventListener('submit', function(event) {
+            // Prevent default form submission
+            event.preventDefault();
+    
+            // Get the selected search option (e.g., answers or reclamations)
+            const searchOption = document.querySelector('input[name="searchOption"]:checked');
+    
+            // Check if a search option is selected
+            if (searchOption) {
+                // Determine the action based on the selected search option
+                let action;
+                if (searchOption.value === 'Reponse') {
+                    action = '{{ path('app_reponse_index') }}';
+                } else if (searchOption.value === 'Reclamation') {
+                    action = '{{ path('app_reclamation_list') }}';
+                }
+    
+                // Set the form action and submit the form
+                searchForm.action = action;
+                searchForm.submit();
+            } else {
+                // Display an error message or handle the case where no option is selected
+                console.error('Please select a search option');
+            }
+        });
+    </script>
+
+    
+    
 
     <!-- Template Javascript -->
     <!-- Template Javascript -->

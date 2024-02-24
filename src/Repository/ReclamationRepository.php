@@ -61,5 +61,31 @@ class ReclamationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+
+      /**
+     * Find reclamations by object or type.
+     *
+     * @param string|null $object The object to search for.
+     * @param string|null $type   The type to search for.
+     *
+     * @return Reclamation[] An array of Reclamation objects matching the criteria.
+     */
+    public function findByObjectOrType(?string $objet, ?string $type): array
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        if ($objet !== null) {
+            $qb->andWhere('r.objet = :objet')
+               ->setParameter('objet', $objet);
+        }
+
+        if ($type !== null) {
+            $qb->andWhere('r.type_de_reclamation = :type')
+               ->setParameter('type', $type);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
     
 }

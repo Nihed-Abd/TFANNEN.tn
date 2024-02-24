@@ -15,12 +15,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class ReponseController extends AbstractController
 {
     #[Route('/', name: 'app_reponse_index', methods: ['GET'])]
-    public function index(ReponseRepository $reponseRepository): Response
-    {
-        return $this->render('reponse/index.html.twig', [
-            'reponses' => $reponseRepository->findAll(),
-        ]);
+    public function index(Request $request, ReponseRepository $reponseRepository): Response
+{
+    $searchQuery = $request->query->get('search');
+
+    if ($searchQuery) {
+        // Assuming your status and decision fields are properties of the Reponse entity
+        $reponses = $reponseRepository->findBySearchQuery($searchQuery);
+    } else {
+        $reponses = $reponseRepository->findAll();
     }
+
+    return $this->render('reponse/index.html.twig', [
+        'reponses' => $reponses,
+    ]);
+}
+
+    
+
 
     #[Route('/new', name: 'app_reponse_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
