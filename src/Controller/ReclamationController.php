@@ -13,6 +13,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twilio\Rest\Client;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
@@ -51,6 +52,20 @@ public function new(Request $request, EntityManagerInterface $entityManager, $us
     if ($form->isSubmitted() && $form->isValid()) {
         $entityManager->persist($reclamation);
         $entityManager->flush();
+
+        // Send SMS using Twilio
+        $sid    = "ACb9a316043c5f17e215f7b2bfb309bf70"; // Your Twilio Account SID
+        $token  = "c1d6004530cae120738bf72be12b6e92"; // Your Twilio Auth Token
+        $twilio = new Client($sid, $token);
+
+        $to = "+21698715915"; // Recipient's phone number
+        $from = "+12315254787"; // Your Twilio phone number
+        $body = "New complaint uploaded: {$reclamation->getObjet()}"; // Body of the SMS
+
+        $message = $twilio->messages->create($to, [
+            "from" => $from,
+            "body" => $body
+        ]);
 
         // Redirect to the index route for the specific user
         return $this->redirectToRoute('app_reclamation_index', ['user_id' => $user_id], Response::HTTP_SEE_OTHER);
