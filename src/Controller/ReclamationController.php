@@ -14,22 +14,31 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twilio\Rest\Client;
+use Knp\Component\Pager\PaginatorInterface;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
 {
     #[Route('/{user_id}', name: 'app_reclamation_index', methods: ['GET'])]
-public function index(ReclamationRepository $reclamationRepository, ReponseRepository $reponseRepository, $user_id): Response
-{
-    $reclamations = $reclamationRepository->findAllWithResponsesByUserId($user_id);
-    $form = $this->createForm(ReclamationType::class); // Create the form here
-
-    return $this->render('reclamation/index.html.twig', [
-        'reclamations' => $reclamations,
-        'user_id' => $user_id,
-        'form' => $form->createView(), // Pass the form variable to the template
-    ]);
-}
+    public function index(ReclamationRepository $reclamationRepository, ReponseRepository $reponseRepository, PaginatorInterface $paginator, Request $request, $user_id): Response
+    {
+        $query = $reclamationRepository->findAllWithResponsesByUserId($user_id); // Get the query instead of directly fetching results
+    
+        // Paginate the results
+        $reclamations = $paginator->paginate(
+            $query, // Query to paginate
+            $request->query->getInt('page', 1), // Current page number
+            3 // Number of items per page
+        );
+    
+        $form = $this->createForm(ReclamationType::class); // Create the form here
+    
+        return $this->render('reclamation/index.html.twig', [
+            'reclamations' => $reclamations,
+            'user_id' => $user_id,
+            'form' => $form->createView(), // Pass the form variable to the template
+        ]);
+    }
 
 
   #[Route('/new/{user_id}', name: 'app_reclamation_new', methods: ['GET', 'POST'])]

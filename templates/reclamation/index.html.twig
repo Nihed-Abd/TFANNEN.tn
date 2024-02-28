@@ -49,6 +49,16 @@
             </div>
             {% endfor %}
         </div>
+        
+        <!-- Pagination -->
+        <div class="pagi-wrp mt-65">
+            {% for page in 1..reclamations.pageCount %}
+                <a href="{{ path('app_reclamation_index', {'user_id': user_id, 'page': page}) }}" class="pagi-btn{% if reclamations.currentPageNumber == page %} active{% endif %}">{{ page | default(0) | number_format }}</a>
+            {% endfor %}
+            {% set nextPage = reclamations.currentPageNumber + 1 %}
+            <a href="{{ path('app_reclamation_index', {'user_id': user_id, 'page': nextPage}) }}" class="fa-regular ms-2 primary-hover fa-angle-right"></a>
+        </div>
+        <!-- End Pagination -->
     </div>
 </section>
 {% endblock %}
