@@ -1,0 +1,19 @@
+#index:
+#    path: /
+#    controller: App\Controller\DefaultController::index
+get_images:
+    path: '/get_images'
+    controller: 'App\Controller\UserController::getImages'
+
+
+base_admin:
+    path: '/base-admin'
+    controller: 'App\Controller\UserAuthController::baseAdmin'
+
+base_user:
+    path: '/base-user'
+    controller: 'App\Controller\UserAuthController::baseUser'
+
+base_designer:
+    path: '/base-designer'
+    controller: 'App\Controller\UserAuthController::baseDesigner'
