@@ -5,6 +5,18 @@
 {% block body %}
 <section class="reclamation-page pt-5 pb-5">
     <div class="container">
+        <!-- Showing Results Message -->
+        <div class="mt-3">
+            {% set totalReclamations = reclamations.getTotalItemCount() %}
+            {% set currentPage = reclamations.getCurrentPageNumber() %}
+            {% set resultsPerPage = reclamations.getItemNumberPerPage() %}
+            {% set startIndex = (currentPage - 1) * resultsPerPage + 1 %}
+            {% set endIndex = min(currentPage * resultsPerPage, totalReclamations) %}
+            
+            <p class="fw-600">Showing {{ startIndex }}–{{ endIndex }} of {{ totalReclamations }} Results</p>
+        </div>
+        <!-- End Showing Results Message -->
+        
         <div class="reclamation-list radius-10 bor sub-bg">
             <div class="reclamation-header py-3 px-4 d-flex justify-content-between align-items-center fw-bold text-white text-uppercase">
                 <div class="reclamation-column col">ID</div>
