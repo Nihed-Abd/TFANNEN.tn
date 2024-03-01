@@ -62,10 +62,14 @@
 {{ form_label(form.picture, null, { 'label_attr': {'id': 'pictureLabel'} }) }}
 {{ form_widget(form.picture, { 'attr': {'style': 'display: none;', 'id': 'picture', 'value': ''} }) }}
 {{ form_errors(form.picture) }}
+
+
+
 <div id="imageChoicesContainer" style="display: none;"></div>
 <button type="button" id="toggleImageChoices">Toggle Image Choices</button>
 {# ... rest of the form rendering #}
-
+{{ form_row(form.recaptcha) }}
+{{ form_errors(form.recaptcha) }}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
     $(document).ready(function () {

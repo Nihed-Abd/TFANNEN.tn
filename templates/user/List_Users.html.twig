@@ -91,8 +91,12 @@
                     <i class="fa fa-bars"></i>
                 </a>
                 <form class="d-none d-md-flex ms-4">
-                    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
-                </form>
+    <input class="form-control bg-dark border-0" type="search" placeholder="Search">
+</form>
+
+<ul id="user-list">
+    {# Display search results here dynamically #}
+</ul>
                 <div class="navbar-nav align-items-center ms-auto">
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
@@ -200,17 +204,52 @@
                 </tr>
             </thead>
             <tbody>
-                {% for user in users %}
-                    <tr>
-                        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getUsername() }}</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getEmail() }}</td>
-                        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getRoles()|join(', ') }}</td>
-                        <td class="actions" style="padding: 10px; border: 1px solid #ddd;">
-                          <button  <a href="{{ path('delete_user', {'id': user.id}) }}" style="text-decoration: none; color: #dc3545; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px;" onclick="return confirm('Are you sure you want to ban this user?')">Ban</a></button>
-                        </td>
-                    </tr>
-                {% endfor %}
+               {% for user in users %}
+    <tr>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getUsername() }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getEmail() }}</td>
+        <td style="padding: 10px; border: 1px solid #ddd;">{{ user.getRoles()|join(', ') }}</td>
+        <td class="actions" style="padding: 10px; border: 1px solid #ddd;">
+            <button><a href="{{ path('delete_user', {'id': user.id}) }}" style="text-decoration: none; color: #dc3545; padding: 5px 10px; border: 1px solid #dc3545; border-radius: 5px;" onclick="return confirm('Are you sure you want to ban this user?')">Ban</a></button>
+        </td>
+    </tr>
+{% endfor %}
+
             </tbody>
         </table>
     </div>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.querySelector('.form-control');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const inputValue = searchInput.value;
+
+            // Use AJAX to send a request to the Symfony route
+            fetch(`/search-users?q=${inputValue}`)
+                .then(response => response.json())
+                .then(data => {
+                    // Update the content with the search results
+                    console.log('Search results:', data);
+                    // Implement logic to update the UI based on the search results
+
+                    // Example: Update a list of users
+                    const userList = document.querySelector('#user-list');
+                    userList.innerHTML = ''; // Clear previous results
+
+                    data.forEach(user => {
+                        const userItem = document.createElement('li');
+                        userItem.textContent = user.username; // Adjust this based on your user data
+                        userList.appendChild(userItem);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    }
+});
+</script>
 {% endblock %}

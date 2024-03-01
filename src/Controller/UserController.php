@@ -4,6 +4,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Carriere;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\FormError;
 
 
 class UserController extends AbstractController
@@ -44,9 +46,20 @@ class UserController extends AbstractController
     
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $form->getData();
-    
+     // Check for duplicate email before persisting
+     $existingUser = $this->getDoctrine()->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+
+     if ($existingUser) {
+         // Add a custom error to the form
+         $form->get('email')->addError(new FormError('This email is already taken. Please choose another one.'));
+
+         // You may want to return here to prevent further processing
+         return $this->render('user/register.html.twig', [
+             'form' => $form->createView(),
+         ]);
+     }
             // Set the default role for the user
-            $user->setRoles(['ROLE_USER']);
+            $user->setRoles(['ROLE_CLIENT']);
     
             // Get the selected image name from the hidden field
             $selectedImage = $request->request->get('picture');
@@ -70,20 +83,24 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+       
     #[Route('/listUsers', name: 'list_all_users')]
 
-    public function displayUsersForm(EntityManagerInterface $entityManager): Response
+        public function displayUsersForm(EntityManagerInterface $entityManager, Request $request): Response
 {
     $users = $entityManager->getRepository(User::class)->createQueryBuilder('u')
-    ->where('u.roles LIKE :roleUser OR u.roles LIKE :roleDesigner')
-    ->setParameter('roleUser', '%"ROLE_USER"%')
-    ->setParameter('roleDesigner', '%"ROLE_DESIGNER"%')
-    ->getQuery()
-    ->getResult();
+        ->where('u.roles LIKE :roleClient OR u.roles LIKE :roleDesigner')
+        ->setParameter('roleClient', '%"ROLE_CLIENT"%')
+        ->setParameter('roleDesigner', '%"ROLE_DESIGNER"%')
+        ->getQuery()
+        ->getResult();
 
-// Render the form template and pass the users data
-return $this->render('user/List_Users.html.twig', [
-    'users' => $users,
+    if ($request->isXmlHttpRequest()) {
+        return new JsonResponse($users);
+    }
+
+    return $this->render('user/List_Users.html.twig', [
+        'users' => $users,
     ]);
 }
 
@@ -203,7 +220,7 @@ public function editUserProfile(Request $request, UserPasswordEncoderInterface $
         $entityManager->persist($user);
         $entityManager->flush();
 
-        return $this->redirectToRoute('base_user');
+        return $this->redirectToRoute('base_client');
     }
 
     return $this->render('user/UserProfile.html.twig', [
@@ -338,4 +355,26 @@ public function rejectSubmission(int $id): Response
 
     return $this->redirectToRoute('list_all_submissions');
 }
+
+#[Route('/search-users', name: 'search_users', methods: ['GET'])]
+
+public function searchUsers(Request $request, EntityManagerInterface $entityManager): JsonResponse
+{
+    $searchTerm = $request->query->get('q');
+    
+    // Use your repository method to search users based on $searchTerm
+    $users = $entityManager->getRepository(User::class)->findBySearchTerm($searchTerm);
+
+    $userArray = [];
+    foreach ($users as $user) {
+        $userArray[] = [
+            'username' => $user->getUsername(),
+            'email' => $user->getEmail(),
+            // Add other fields as needed
+        ];
+    }
+
+    return new JsonResponse($userArray);
+}
+
 }

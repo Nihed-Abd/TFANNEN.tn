@@ -39,8 +39,15 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
          - { path: ^/base-admin, roles: ROLE_ADMIN }
+         - { path: ^/listUsers, roles: ROLE_ADMIN }
+         - { path: ^/ListOfSubmissions, roles: ROLE_ADMIN }
+         - { path: ^/editAdminProfile, roles: ROLE_ADMIN }
          - { path: ^/base-designer, roles: ROLE_DESIGNER }
-         - { path: ^/base-user, roles: ROLE_USER }
+         - { path: ^/editDesignerProfile, roles: ROLE_DESIGNER }
+         - { path: ^/editUserProfile, roles: ROLE_CLIENT }
+         - { path: ^/base-client, roles: ROLE_CLIENT }
+         
+         
          
 
 

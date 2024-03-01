@@ -18,6 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Validator\Constraints as Assert;
+use VictorPrdh\RecaptchaBundle\Form\ReCaptchaType;
 
 
 
@@ -52,7 +53,8 @@ class UserType extends AbstractType
                 'label' => 'Choose Avatar:',
                 'mapped' => false, // This field is not mapped to an entity property
                 'required' => false,
-            ]);
+            ])
+            ->add("recaptcha", ReCaptchaType::class);
           
     }
     public function configureOptions(OptionsResolver $resolver)

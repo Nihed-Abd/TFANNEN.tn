@@ -10,10 +10,14 @@ base_admin:
     path: '/base-admin'
     controller: 'App\Controller\UserAuthController::baseAdmin'
 
-base_user:
-    path: '/base-user'
-    controller: 'App\Controller\UserAuthController::baseUser'
+base_client:
+    path: '/base-client'
+    controller: 'App\Controller\UserAuthController::baseClient'
 
 base_designer:
     path: '/base-designer'
     controller: 'App\Controller\UserAuthController::baseDesigner'
+
+search_users:
+    path: /search-users
+    controller: App\Controller\UserController::searchUsers

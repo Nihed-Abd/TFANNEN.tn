@@ -37,11 +37,11 @@ class UserAuthController extends AbstractController
         return $this->render('/user/baseAdmin.html.twig');
     }
 
-    public function baseUser(): Response
+    public function baseClient(): Response
     {
         // Additional logic if needed
 
-        return $this->render('/user/baseUser.html.twig');
+        return $this->render('/user/baseClient.html.twig');
     }
     public function baseDesigner(): Response
     {
