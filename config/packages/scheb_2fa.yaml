@@ -16,3 +16,4 @@ scheb_two_factor:
         sender_email: no-reply@test.com
         sender_name: Tfannen Security Tech
         mailer: App\Mailer\MyAuthCodeMailer
+        template: 'security/2fa_form.html.twig'  # Use your custom template name
