@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'Base.html.twig' %}
 
 {% block title %}New Design - TFANNEN{% endblock %}
 
@@ -14,52 +14,269 @@
    Shop
 {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        ::-webkit-slider-thumb {
+            background: #fa4318;
+        }
+
+        ::-moz-range-thumb {
+            background: #fa4318;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #fa4318;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #fa4318;
+        }
+        /* Styling for the search bar */
+        .search-input {
+    width: calc(100% - 28px);
+    padding: 8px;
+    border: 1px solid #fa4318; /* Set border color */
+    border-radius: 3px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #fa4318; /* Change border color on focus */
+}
+.zoom-effect {
+        transition: transform 0.3s ease;
+    }
+
+    .zoom-effect:hover {
+        transform: scale(1.1); /* Adjust the scale value as needed */
+    }
+    /* Zoom effect for back-image */
+    .zoom-effect-back {
+        transition: transform 0.3s ease;
+    }
+
+    .zoom-effect-back:hover {
+        transform: scale(1.1); /* Adjust the scale value as needed */
+    }
+
+    </style>
+{% endblock %}
+
 {% block body %}
 <section class="product-area pt-130 pb-130">
-            <div class="container">
-                <div class="pb-20 bor-bottom shop-page-wrp d-flex justify-content-between align-items-center mb-65">
-                    <p class="fw-600">Showing 1–12 of 17 results</p>
-                    <div class="short">
-                        <select name="shortList" id="shortList">
-                            <option value="0">Short by popularity</option>
-                            <option value="1">E-Cigarette</option>
-                            <option value="2">POP Extra</option>
-                            <option value="3">Charger Kit</option>
-                            <option value="4">100ml Nic</option>
-                            <option value="5">Salt Juice</option>
-                        </select>
-                    </div>
-                </div>
-    <div class="col-xl-9 col-lg-8">
-        <div class="row g-4">
-             {% for design in designs %}
-            <div class="col-xl-4 col-lg-6 col-md-6">
-                 <div class="product__item bor">
-                <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
-               <a href="{{ path('app_design_show', {'design': design.id, 'user_id': user_id }) }}" class="product__image pt-20 d-block">
-    <img class="font-image" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
-</a>
-
-                <div class="product__content">
-                    <h4 class="mb-15"><a class="primary-hover" href="{{ path('app_design_show', {'design': design.id, 'user_id': user_id }) }}">{{ design.titre }}</a></h4>
-                    <span class="primary-color">{{ design.prix }} DT</span>
-                    <div class="star mt-20">
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                        <i class="fa-solid fa-star"></i>
-                    </div>
-                </div>
-                <a class="product__cart d-block bor-top" href="#0"><i class="fa-regular fa-cart-shopping primary-color me-1"></i> <span>Add to cart</span></a>
-                 </div>
-             </div>
-        {% else %}
-            <div class="col-12">
-            <p>Sorry ! No Product found , Visite us later </p>
+    <div class="container">
+        <div class="pb-20 bor-bottom shop-page-wrp d-flex justify-content-between align-items-center mb-65">
+ <p class="fw-600">Showing {{ designs|length }} of {{ totalDesigns }} Designs</p>
+            <div class="short">
+                 <select name="shortList" id="shortList" onchange="sortProducts(this.value)">
+                    <option value="0">Short by :</option>
+                    <option value="1">Highest Rate</option>
+                    <option value="2">Newest</option>
+                    <option value="3">oldest</option>
+                    <option value="4">Highest Price </option>
+                    <option value="5">Lowest Price </option>
+                </select>
+            </div>
         </div>
-        {% endfor %}
+        <div class="row g-4">
+            <div class="col-xl-3 col-lg-4">
+                <div class="product__left-item sub-bg">
+                    <div class="image mb-30">
+                        <img src="{{ asset('assets/images/icons/filter.png')}}" alt="image">
+                    </div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Price</a></h4>
+                        <!-- Slider for Price -->
+                        <input type="range" min="1" max="500" value="250" class="slider" id="priceSlider">
+                        <p>Value: <span id="priceValue" style="color: #fa4318;">250</span> DT</p>
+                    </div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Search</a></h4>
+                        <!-- Search Bar -->
+                                <input type="text" id="searchInput" class="search-input" placeholder="Search for designs..." onkeyup="searchDesigns()">
+                    </div>
+                    
+                    <div class="image pt-40 mb-30 bor-top mt-40"></div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Category</a></h4>
+                        <!-- Category Checkboxes -->
+                        <label><input type="checkbox" value="t_shirts" class="category-filter"> T-shirts</label><br>
+                        <label><input type="checkbox" value="hoodies" class="category-filter"> Hoodies</label><br>
+                        <label><input type="checkbox" value="pants" class="category-filter"> Pants</label><br>
+                        <label><input type="checkbox" value="dresses" class="category-filter"> Dresses</label><br>
+                        <label><input type="checkbox" value="jackets" class="category-filter"> Jackets</label><br>
+                        <label><input type="checkbox" value="sweatshirts" class="category-filter"> Sweatshirts</label><br>
+                        <label><input type="checkbox" value="skirts" class="category-filter"> Skirts</label><br>
+                        <label><input type="checkbox" value="sports_Themes" class="category-filter"> Sports Themes</label><br>
+                        <label><input type="checkbox" value="Funny" class="category-filter"> Funniest and Troll</label><br>
+                        <label><input type="checkbox" value="hat" class="category-filter"> Hats</label><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-8">
+                <div class="row g-4" id="productList">
+                    {% for design in designs %}
+    <div class="col-xl-4 col-lg-6 col-md-6 product-item" data-price="{{ design.prix }}" data-category="{{ design.categorie }}" data-id="{{ design.id }}" data-average-rating="{{ design.averageRating }}">
+                        <div class="product__item bor">
+                            <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
+                            <a href="{{ path('app_design_show', {'design': design.id, 'user_id': user_id }) }}" class="product__image pt-20 d-block">
+ <img class="font-image zoom-effect" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                                <img class="back-image zoom-effect" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                            </a>
+
+                            <div class="product__content">
+                                <h4 class="mb-15"><a class="primary-hover" href="{{ path('app_design_show', {'design': design.id, 'user_id': user_id }) }}">{{ design.titre }}</a></h4>
+                                <span class="primary-color">{{ design.prix }} DT</span>
+                               <div class="star mt-20">
+                    {% set averageRating = design.getAverageRating() %}
+                    {% for i in 1..5 %}
+                        {% if i <= averageRating %}
+                            <i class="fa-solid fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                            </div>
+                            <a class="product__cart d-block bor-top" href="#0"><i class="fa-regular fa-cart-shopping primary-color me-1"></i> <span>Add to cart</span></a>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12">
+                        <p>Sorry! No Product found, Visit us later</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pagi-wrp mt-65">
+            {% for page in 1..totalPages %}
+<a href="{{ path('app_design_index', {'user_id': user_id, 'page': page}) }}" class="pagi-btn {% if page == currentPage %}active{% endif %}">{{ page }}</a>
+            {% endfor %}
+        </div>
+            </div>
+        </div>
     </div>
-</div>
-</div>
+</section>
+
+<script>
+    var slider = document.getElementById("priceSlider");
+    var output = document.getElementById("priceValue");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        filterProducts(parseInt(this.value));
+    }
+
+    function filterProducts(price) {
+        var products = document.getElementsByClassName("product-item");
+        var selectedCategories = getSelectedCategories();
+        for (var i = 0; i < products.length; i++) {
+            var productPrice = parseInt(products[i].getAttribute("data-price"));
+            var productCategory = products[i].getAttribute("data-category");
+            if (productPrice > price || (selectedCategories.length > 0 && !selectedCategories.includes(productCategory))) {
+                products[i].style.display = "none";
+            } else {
+                products[i].style.display = "block";
+            }
+        }
+    }
+
+    function getSelectedCategories() {
+        var checkboxes = document.getElementsByClassName("category-filter");
+        var selectedCategories = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedCategories.push(checkboxes[i].value);
+            }
+        }
+        return selectedCategories;
+    }
+
+    var categoryCheckboxes = document.getElementsByClassName("category-filter");
+    for (var i = 0; i < categoryCheckboxes.length; i++) {
+        categoryCheckboxes[i].addEventListener("change", function() {
+            filterProducts(parseInt(slider.value));
+        });
+    }
+
+    function searchDesigns() {
+        var input, filter, productList, productItem, title, i, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        productList = document.getElementById("productList");
+        productItem = productList.getElementsByClassName('product-item');
+
+        for (i = 0; i < productItem.length; i++) {
+            title = productItem[i].getElementsByTagName("h4")[0];
+            txtValue = title.textContent || title.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                productItem[i].style.display = "";
+            } else {
+                productItem[i].style.display = "none";
+            }
+        }
+    }
+    
+function sortProducts(sortBy) {
+    var productList = document.getElementById("productList");
+    var productItems = productList.querySelectorAll('.product-item');
+
+    // Convert NodeList to array for easier sorting
+    var productArray = Array.from(productItems);
+
+    switch (sortBy) {
+        case '1':
+            productArray.sort((a, b) => {
+                let averageRatingA = parseFloat(a.dataset.averageRating);
+                let averageRatingB = parseFloat(b.dataset.averageRating);
+                return averageRatingB - averageRatingA;
+            });
+            break;
+        case '2':
+    // Newest (Highest ID to Lowest ID)
+    productArray.sort((a, b) => {
+        return parseInt(b.getAttribute('data-id')) - parseInt(a.getAttribute('data-id'));
+    });
+    break;
+case '3':
+    // Oldest (Lowest ID to Highest ID)
+    productArray.sort((a, b) => {
+        return parseInt(a.getAttribute('data-id')) - parseInt(b.getAttribute('data-id'));
+    });
+    break;
+        case '4':
+            // Highest Price
+            productArray.sort((a, b) => {
+                return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+            });
+            break;
+        case '5':
+            // Lowest Price
+            productArray.sort((a, b) => {
+                return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+            });
+            break;
+        default:
+            // Default sorting (show as it is in HTML)
+            break;
+    }
+
+    // Re-append sorted product items to productList
+    productList.innerHTML = '';
+    productArray.forEach(item => {
+        productList.appendChild(item);
+    });
+}
+
+</script>
 {% endblock %}

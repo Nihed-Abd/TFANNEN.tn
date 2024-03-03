@@ -30,25 +30,66 @@ class DesignController extends AbstractController
            'design' => $design,
        ]);
    }
-   
+   #[Route('/search', name: 'search_designs', methods: ['GET'])]
+public function searchDesigns(Request $request, DesignRepository $designRepository): JsonResponse
+{
+    $query = $request->query->get('query');
+    $designs = $designRepository->findBySearchQuery($query); // Implement this method in your repository
+
+    // Serialize the designs to JSON format
+    $data = [];
+    foreach ($designs as $design) {
+        $data[] = [
+            'id' => $design->getId(),
+            'title' => $design->getTitle(),
+            'picture' => $design->getPicture(),
+            'category' => $design->getCategory(),
+        ];
+    }
+
+    return new JsonResponse($data);
+}
+
     //* Store *//
     #[Route('/', name: 'Visitor_design_index', methods: ['GET'])]
-    public function indexVisitor(DesignRepository $designRepository): Response
-    {
-        return $this->render('design/VisitorVue/VisitorIndex.html.twig', [
-            'designs' => $designRepository->findAll(),
-        ]);
-    }
+    public function indexVisitor(Request $request, DesignRepository $designRepository): Response
+{
+    $currentPage = $request->query->getInt('page', 1);
+    $totalDesigns = count($designRepository->findAll());
+    $productsPerPage = 6;
+    $totalPages = ceil($totalDesigns / $productsPerPage);
+
+    $offset = ($currentPage - 1) * $productsPerPage;
+    $designs = $designRepository->findBy([], null, $productsPerPage, $offset);
+
+    return $this->render('design/VisitorVue/VisitorIndex.html.twig', [
+        'designs' => $designs,
+        'totalDesigns' => $totalDesigns,
+        'totalPages' => $totalPages,
+        'currentPage' => $currentPage,
+        'productsPerPage' => $productsPerPage,
+    ]);
+}
 
     //////////////////////////* Client Functions *///////////////////////////
     #[Route('/client/{user_id}', name: 'app_design_index', methods: ['GET'])]
-public function indexClient(DesignRepository $designRepository, $user_id): Response
+public function indexClient(Request $request,DesignRepository $designRepository, $user_id): Response
 {
-    $designs = $designRepository->findAll();
+    $currentPage = $request->query->getInt('page', 1);
+    $totalDesigns = count($designRepository->findAll());
+    $productsPerPage = 6;
+    $totalPages = ceil($totalDesigns / $productsPerPage);
+
+    $offset = ($currentPage - 1) * $productsPerPage;
+    $designs = $designRepository->findBy([], null, $productsPerPage, $offset);
     
     return $this->render('design/ClientVue/index.html.twig', [
         'designs' => $designs,
         'user_id' => $user_id,
+        'totalDesigns' => $totalDesigns,
+        'totalPages' => $totalPages,
+        'currentPage' => $currentPage,
+        'productsPerPage' => $productsPerPage,
     ]);
 }
 
@@ -68,12 +109,24 @@ public function showClient(?Design $design, $user_id): Response
 
             //* Store *//
             #[Route('/designer/{users_id}', name: 'designer_design_index', methods: ['GET'])]
-            public function indexDesigner(int $users_id, DesignRepository $designRepository): Response
+            public function indexDesigner(int $users_id, Request $request, DesignRepository $designRepository): Response
             {
-                $designs = $designRepository->findAll();
+                $currentPage = $request->query->getInt('page', 1);
+                $productsPerPage = 6;
+                $offset = ($currentPage - 1) * $productsPerPage;
+            
+                $designs = $designRepository->findBy([], null, $productsPerPage, $offset);
+                $totalDesigns = count($designRepository->findAll());
+            
+                $totalPages = ceil($totalDesigns / $productsPerPage);
+            
                 return $this->render('design/DesignerVue/designerView.html.twig', [
                     'designs' => $designs,
-                    'users_id' => $users_id, 
+                    'users_id' => $users_id,
+                    'totalDesigns' => $totalDesigns,
+                    'totalPages' => $totalPages,
+                    'currentPage' => $currentPage,
+                    'productsPerPage' => $productsPerPage,
                 ]);
             }
 

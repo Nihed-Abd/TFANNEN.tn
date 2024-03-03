@@ -37,11 +37,9 @@ class Design
     private Collection $competitions;
 
     #[ORM\ManyToOne(inversedBy: 'designs')]
-#[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id')]
-private ?User $users = null;
+    #[ORM\JoinColumn(name: 'users_id', referencedColumnName: 'id')]
+    private ?User $users = null;
 
-    
-    
     #[ORM\Column(length: 255)]
     private ?string $picture = null;
 
@@ -163,6 +161,25 @@ private ?User $users = null;
     }
 
     /**
+     * Get the average rating for this design
+     */
+    public function getAverageRating(): float
+    {
+        $totalRating = 0;
+        $numAvis = count($this->avis);
+
+        foreach ($this->avis as $avi) {
+            $totalRating += $avi->getAvis();
+        }
+
+        if ($numAvis === 0) {
+            return 0; // Return 0 if no reviews
+        }
+
+        return $totalRating / $numAvis;
+    }
+
+    /**
      * @return Collection<int, Competition>
      */
     public function getCompetitions(): Collection
@@ -212,6 +229,7 @@ private ?User $users = null;
 
         return $this;
     }
+
     public function getPicturePath(): ?string
     {
         return $this->picturePath;

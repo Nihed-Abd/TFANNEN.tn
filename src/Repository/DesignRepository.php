@@ -45,4 +45,13 @@ class DesignRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function findBySearchQuery(string $query): array
+{
+    return $this->createQueryBuilder('d')
+        ->where('d.title LIKE :query')
+        ->setParameter('query', '%'.$query.'%')
+        ->getQuery()
+        ->getResult();
+}
+
 }

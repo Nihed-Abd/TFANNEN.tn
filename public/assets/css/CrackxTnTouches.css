@@ -1,0 +1,64 @@
+/* Store Filter Bar Style */
+.product__filter-bar {
+    background-color: #f9f9f9;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.filter__content {
+    display: flex;
+    align-items: center;
+}
+
+.filter__price-range {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.filter__price-range label {
+    font-weight: bold;
+}
+
+.filter__price-range input[type="range"] {
+    width: 100%;
+}
+
+.min-price,
+.max-price {
+    display: inline-block;
+    width: 50px;
+    text-align: center;
+}
+
+.filter__category {
+    flex: 1;
+}
+
+.category-options {
+    display: flex;
+    gap: 10px;
+}
+
+.category-options label {
+    cursor: pointer;
+}
+
+.category-options input[type="radio"] {
+    display: none;
+}
+
+.category-options input[type="radio"] + label {
+    background-color: #fff;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.category-options input[type="radio"]:checked + label {
+    background-color: hwb(14 0% 0%);
+    color: #fff;
+}
+
+/*   */

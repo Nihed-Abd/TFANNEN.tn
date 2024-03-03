@@ -46,13 +46,14 @@
                                             <div class="alert alert-danger">{{ error.message }}</div>
                                         {% endfor %}
                                     </div>
-                                    <div class="col-12">
+                                   <div class="col-12">
                                         {{ form_label(form.categorie, 'Category', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
-                                        {% for error in form.categorie.vars.errors %}
-                                            <div class="alert alert-danger">{{ error.message }}</div>
-                                        {% endfor %}
+                                         {% for error in form.categorie.vars.errors %}
+                                   <div class="alert alert-danger">{{ error.message }}</div>
+                                          {% endfor %}
                                     </div>
+
                                     <div class="col-12">
                                         {{ form_label(form.picture, 'Picture', {'label_attr': {'class': 'form-label'}}) }}
                                         {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}

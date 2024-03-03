@@ -49,8 +49,8 @@ Details
                         {% for avi in design.avis %}
                             {% set total_rating = total_rating + avi.avis %}
                             {% set avis_count = avis_count + 1 %}
-                        {% endfor %}
-                        {% if avis_count > 0 %}
+                        {% endfor %}000
+0    00                    {% if avis_count > 0 %}
                             {% set average_rating = total_rating / avis_count %}
                             <div class="star primary-color pb-2">
                                 {% set full_stars = average_rating | round %}
@@ -152,7 +152,7 @@ Details
                     <div class="section-title mt-5 py-15 mb-30">
     <h2 class="text-capitalize primary-color mb-10">Add a Review </h2>
     <p class="mb-20">Sorry ! But Designers Can't add Reviews </p>
-    <a href="{{ path('app_design_by_designer' , {'users_id': users_id, 'design_id': design.id}) }}" class="btn-one"><span>Back to shop</span></a>
+    <a href="{{ path('designer_design_index' , {'users_id': users_id}) }}" class="btn-one"><span>Back to shop</span></a>
 
                     </div>
 
