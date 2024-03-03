@@ -10,6 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Twilio\Rest\Client;
 
 #[Route('/reponse')]
 class ReponseController extends AbstractController
@@ -94,20 +95,44 @@ class ReponseController extends AbstractController
     #[Route('/{id}/respond', name: 'app_reclamation_respond', methods: ['GET', 'POST'])]
     public function respond(Request $request, Reclamation $reclamation, EntityManagerInterface $entityManager): Response
     {
+        // Update with your Twilio credentials
+        $sid = "ACb9a316043c5f17e215f7b2bfb309bf70";
+        $token = "c1d6004530cae120738bf72be12b6e92";
+
+        // Create Twilio client
+        $twilio = new Client($sid, $token);
+
+        // Assuming Reponse is your entity for storing responses
         $reponse = new Reponse();
         $reponse->setIdReclamation($reclamation); // Set the reclamation for the response
 
+        // Create form and handle request
         $form = $this->createForm(ReponseType::class, $reponse);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Get the decision from the form
+            $decision = $form->get('decision')->getData();
+
+            // Prepare the message content including the decision
+            $messageBody = "Decision: $decision";
+
+            // Send WhatsApp message
+            $message = $twilio->messages
+                ->create("whatsapp:+21698715915", [
+                    "from" => "whatsapp:+14155238886",
+                    "body" => $messageBody
+                ]);
+
+            // Persist response entity
             $entityManager->persist($reponse);
             $entityManager->flush();
 
-            
+            // Redirect to response index page
             return $this->redirectToRoute('app_reponse_index');
         }
 
+        // Render form template with reclamation and form
         return $this->renderForm('reponse/respond.html.twig', [
             'reclamation' => $reclamation,
             'form' => $form,
