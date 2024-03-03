@@ -1,0 +1,13 @@
+{# templates/user/enable_two_factor.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <h1>Enable Two-Factor Authentication</h1>
+
+    <form method="post" action="{{ path('enable_two_factor') }}">
+        {{ form_row(form._token) }}
+
+        <button type="submit">Enable Two-Factor Authentication</button>
+    </form>
+{% endblock %}

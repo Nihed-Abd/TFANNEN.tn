@@ -2,8 +2,17 @@
 
 namespace App\Controller;
 use App\Entity\User;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\EmailGenerator;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+
+
 use App\Entity\Carriere;
 use App\Form\UserType;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticatorInterface;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,10 +31,16 @@ use Symfony\Component\Validator\Constraints\Regex;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormError;
+use App\Mailer\MyAuthCodeMailer;
+use App\Mailer\AuthCodeMailerInterface;
+
 
 
 class UserController extends AbstractController
 {
+   
+    
+
     #[Route('/get_images', name: 'get_images')]
 
     public function getImages(): JsonResponse
@@ -38,7 +53,7 @@ class UserController extends AbstractController
         return new JsonResponse($images);
     }
     #[Route('/register', name: 'register')]
-    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder): Response
+    public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder,MailerInterface $mailer,CodeGeneratorInterface $codeGenerator): Response
     {
         $form = $this->createForm(UserType::class);
     
@@ -71,12 +86,10 @@ class UserController extends AbstractController
             $encodedPassword = $passwordEncoder->encodePassword($user, $user->getPassword());
             $user->setPassword($encodedPassword);
     
-            // Persist the user to the database
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($user);
-            $entityManager->flush();
-    
-            // Redirect to a success page or perform additional actions
+            $authCode = $codeGenerator->generateAndSend($user);
+
+        // Check if the authentication code was generated successfully
+        
         }
     
         return $this->render('user/register.html.twig', [
@@ -84,7 +97,7 @@ class UserController extends AbstractController
         ]);
     }
        
-    #[Route('/listUsers', name: 'list_all_users')]
+    #[Route('/listUsers', name: 'list_all_users', methods: ['GET'])]
 
         public function displayUsersForm(EntityManagerInterface $entityManager, Request $request): Response
 {
@@ -356,9 +369,28 @@ public function rejectSubmission(int $id): Response
     return $this->redirectToRoute('list_all_submissions');
 }
 
-#[Route('/search-users', name: 'search_users', methods: ['GET'])]
+  
+      #[Route('/enable-two-factor', name: 'enable_two_factor')]
+     
+    public function enableTwoFactor(GoogleAuthenticatorInterface $googleAuthenticator): Response
+    {
+        // Fetch the current user (you may need to adjust this based on your authentication setup)
+        $user = $this->getUser();
 
-public function searchUsers(Request $request, EntityManagerInterface $entityManager): JsonResponse
+        // Generate Google Authenticator secret
+        $secret = $googleAuthenticator->generateSecret();
+
+        // Persist $secret to the user entity
+        //$user->setGoogleAuthenticatorSecret($secret);
+
+        // Your other logic to update the user entity
+
+        return $this->redirectToRoute('user_settings'); // Redirect back to user settings
+    }
+
+//#[Route('/search-users', name: 'search_users', methods: ['GET'])]
+
+/*public function searchUsers(Request $request, EntityManagerInterface $entityManager): JsonResponse
 {
     $searchTerm = $request->query->get('q');
     
@@ -375,6 +407,20 @@ public function searchUsers(Request $request, EntityManagerInterface $entityMana
     }
 
     return new JsonResponse($userArray);
-}
+}*/
+/**
+     * @Route("/test-email", name="test_email")
+     */
+    public function testEmail(MailerInterface $mailer): Response
+    {
+        $email = (new Email())
+            ->from('ilyess.saoudi@gmail.com')
+            ->to('ilyess.saoudi@gmail.com')
+            ->subject('Test Email')
+            ->text('This is a test email.');
 
+        $mailer->send($email);
+
+        return new Response('Test email sent!');
+    }
 }
