@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Twilio\Rest\Client;
 use Knp\Component\Pager\PaginatorInterface;
+use TCPDF;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[Route('/reclamation')]
 class ReclamationController extends AbstractController
@@ -147,5 +149,42 @@ public function new(Request $request, EntityManagerInterface $entityManager, $us
             'reclamations' => $reclamations,
         ]);
     }
+
+    public function generatePdf(int $reclamationId, ContainerInterface $container): Response
+{
+    // Retrieve the reclamation by ID
+    $entityManager = $container->get('doctrine')->getManager();
+    $reclamation = $entityManager->getRepository(Reclamation::class)->find($reclamationId);
+
+    if (!$reclamation) {
+        throw $this->createNotFoundException('Reclamation not found');
+    }
+
+    // Create a new TCPDF instance
+    $pdf = new TCPDF();
+
+    // Set document information
+    $pdf->SetCreator('YourAppName');
+    $pdf->SetAuthor('YourName');
+    $pdf->SetTitle('Reclamation PDF');
+
+    // Add a page
+    $pdf->AddPage();
+
+    // Include your logo and design elements
+    //$pdf->Image('path/to/your/logo.png', 10, 10, 50, 0, 'PNG', '', 'T', false, 300, '', false, false, 0, false, false, false);
+
+    // Add reclamation details to the PDF
+    $html = $this->renderView('pdf_template.html.twig', ['reclamation' => $reclamation]);
+
+    // Render HTML template as PDF
+    $pdf->writeHTML($html);
+
+    // Output the PDF as a response
+    return new Response($pdf->Output('reclamation.pdf', 'I'), 200, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="reclamation.pdf"',
+    ]);
+}
 
 }

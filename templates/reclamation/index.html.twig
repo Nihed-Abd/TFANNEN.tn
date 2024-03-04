@@ -27,7 +27,7 @@
                 <div class="reclamation-column col">Response</div> <!-- New column for Response -->
                 <div class="reclamation-column col">Actions</div>
             </div>
-
+            <!-- Inside the loop that iterates over reclamations -->
             {% for reclamation in reclamations %}
             <div class="reclamation-item p-4 bor-top bor-bottom">
                 <div class="row gx-2 align-items-center">
@@ -44,22 +44,27 @@
                         {% endif %}
                     </div>
                     <div class="col">
-                        <a href="{{ path('app_reclamation_edit', {'id': reclamation.id, 'user_id': user_id}) }}" class="btn btn-secondary">Edit</a>
-                        <form action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" method="post" class="d-inline">
-                            <input type="hidden" name="_method" value="DELETE">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        <div class="btn-group" role="group">
+                            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id, 'user_id': user_id}) }}" class="btn btn-secondary">Edit</a>
+                            <form action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" method="post" class="d-inline">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                            <a href="{{ path('app_reclamation_pdf', {'reclamationId': reclamation.id}) }}" class="btn btn-primary">Generate PDF</a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% else %}
+            <!-- Display a message if no reclamation found -->
             <div class="reclamation-item p-4 bor-top bor-bottom">
                 <div class="d-flex justify-content-center align-items-center">
                     <div class="col" colspan="7">No reclamation found</div>
                 </div>
             </div>
             {% endfor %}
+            
         </div>
         
         <!-- Pagination -->

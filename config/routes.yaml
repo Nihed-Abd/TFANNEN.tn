@@ -57,3 +57,8 @@ app_reclamation_list:
     path: /reclamations
     controller: App\Controller\ReclamationController::listReclamations
     methods: GET
+    
+app_reclamation_pdf:
+    path: '/reclamation/{reclamationId}/pdf'
+    controller: 'App\Controller\ReclamationController::generatePdf'
+
