@@ -45,13 +45,17 @@
                     </div>
                     <div class="col">
                         <div class="btn-group" role="group">
-                            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id, 'user_id': user_id}) }}" class="btn btn-secondary">Edit</a>
+                            <a href="{{ path('app_reclamation_edit', {'id': reclamation.id, 'user_id': user_id}) }}" class="btn btn-secondary mt-40">Edit</a>
+                        </div>
+                        <div class="btn-group" role="group">
                             <form action="{{ path('app_reclamation_delete', {'id': reclamation.id}) }}" method="post" class="d-inline">
                                 <input type="hidden" name="_method" value="DELETE">
                                 <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reclamation.id) }}">
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger mt-40">Delete</button>
                             </form>
-                            <a href="{{ path('app_reclamation_pdf', {'reclamationId': reclamation.id}) }}" class="btn btn-primary">Generate PDF</a>
+                        </div>
+                        <div class="btn-group" role="group">
+                            <a href="{{ path('app_reclamation_pdf', {'reclamationId': reclamation.id}) }}" class="btn btn-primary mt-40">Generate PDF</a>
                         </div>
                     </div>
                 </div>

@@ -1,15 +1,88 @@
-<div class="container">
-    <!-- Your logo -->
-    <img src="{{ asset('assets/images/logo/logo3.png') }}" alt="Logo" class="logo">
-    
-    <!-- Reclamation details -->
-    <div class="reclamation-details">
-        <h2>Reclamation Details</h2>
-        <p><strong>ID:</strong> {{ reclamation.id }}</p>
-        <p><strong>Object:</strong> {{ reclamation.objet }}</p>
-        <p><strong>Type:</strong> {{ reclamation.typeDeReclamation }}</p>
-        <p><strong>Description:</strong> {{ reclamation.descriptionReclamation }}</p>
-        <p><strong>Date:</strong> {{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</p>
-        <!-- Add more reclamation details as needed -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reclamation Details</title>
+    <style>
+        /* Resetting default browser styles */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Body styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Container styles */
+        .container {
+            max-width: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Logo styles */
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 150px;
+            height: auto;
+        }
+
+        /* Reclamation details styles */
+        .reclamation-details {
+            margin-top: 30px;
+        }
+
+        /* Heading styles */
+        .reclamation-details h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        /* Paragraph styles */
+        .reclamation-details p {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        /* Strong styles */
+        .reclamation-details strong {
+            color: #000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Your logo -->
+        <img src="{{ asset('assets/images/logo/logo3.png') }}" alt="Logo" class="logo">
+        
+        <!-- Reclamation details -->
+        <div class="reclamation-details">
+            <h2>Reclamation Details</h2>
+            <p><strong>ID:</strong> {{ reclamation.id }}</p>
+            <p><strong>Object:</strong> {{ reclamation.objet }}</p>
+            <p><strong>Type:</strong> {{ reclamation.typeDeReclamation }}</p>
+            <p><strong>Description:</strong> {{ reclamation.descriptionReclamation }}</p>
+            <p><strong>Date:</strong> {{ reclamation.date ? reclamation.date|date('Y-m-d') : '' }}</p>
+            <!-- Add more reclamation details as needed -->
+        </div>
     </div>
-</div>
+</body>
+</html>
