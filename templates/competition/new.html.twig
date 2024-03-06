@@ -1,0 +1,78 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Promotion - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Create a Promotion
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details to create a new Promotion
+{% endblock %}
+
+{% block body %}
+    <!-- Your page content goes here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}} ) }} 
+                                     <div class="col-12">
+                                        {{ form_label(form.name, 'name', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.name, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                   <div class="col-12">
+                                        {{ form_label(form.description, 'description', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.description, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.regle, 'regle', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.regle, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.regle, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.recompense, 'recompense', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.recompense, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.recompense, {'attr': {'class': 'text_danger'}}) }}
+                                        
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.date_debut, 'date_debut', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.date_debut, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.date_debut, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.date_fin, 'date_fin', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.date_fin, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.date_fin, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                               <div class="col-12">
+    
+</div>
+                                    <div class="col-12">
+                                    <br>
+                                        <button class="mt-40 btn-one" type="submit"><span>ADD Competition</span></button>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

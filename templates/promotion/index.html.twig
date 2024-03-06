@@ -1,0 +1,109 @@
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}New Promotion - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+ <!-- Home content -->
+		<div id="home-content">
+			<div id="content-inner" class="text-center">
+				<div id="home-heading">
+					<h1 id="home-heading-1">
+						Découvrir
+					</h1>
+					<br>
+					<h1 id="home-heading-2">
+						Nos
+						<span>Promotion</span>
+					</h1>
+				</div>
+				<div id="home-text">
+					<p>profiter des bonnes reduction
+					</p>
+				</div>
+				<!-- Arrow down-->
+				<a href="#promotions" title="About" class="smooth-scroll" id="arrow-down">
+					<i class="fas fa-angle-down"></i>
+				</a>
+			</div>
+		</div>
+{% endblock %}
+
+
+
+
+
+
+{% block body %}
+  
+                                        
+
+    
+<section id="promotion" >
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>name</th>
+                <th>Description</th>
+                <th>Taux_reduction</th>
+                <th>Type_promo</th>
+                <th>Code_promo</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for promotion in promotions %}
+            <tr>
+                <td>{{ promotion.id }}</td> 
+                <td>{{ promotion.name }}</td>
+                <td>{{ promotion.description }}</td>
+                <td>{{ promotion.tauxReduction }}</td>
+                <td>{{ promotion.typePromo }}</td>
+                <td>{{ promotion.codePromo }}</td>
+                <td>{{ promotion.dateDebut ? promotion.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ promotion.dateFin ? promotion.dateFin|date('Y-m-d') : '' }}</td>
+              
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+                                    </div>
+                                   
+    <!-- Your page content goes here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                     
+                                 
+                                   
+                                  
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+    </section>
+{% endblock %}

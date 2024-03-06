@@ -1,0 +1,117 @@
+
+
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Promotion - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Create a Promotion
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details to create a new Promotion
+{% endblock %}
+
+{% block body %}
+    <!-- Your page content goes here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}} ) }}
+                                     <div class="col-12">
+                                        {{ form_label(form.name, 'name', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.name, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                   <div class="col-12">
+                                        {{ form_label(form.description, 'description', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.description, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.taux_reduction, 'taux_reduction', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.taux_reduction, {'attr': {'class': 'form-control'}}) }}
+                                        {{ form_errors(form.taux_reduction, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.type_promo, 'type_promo', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.type_promo, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.type_promo, {'attr': {'class': 'text_danger'}}) }}
+                                        
+                                    </div>
+                                    <div class="col-12" id="code_promo_field" style="display: none;">
+                                       {{ form_label(form.code_promo, 'code_promo', {'label_attr': {'class': 'form-label'}}) }}
+                                       {{ form_widget(form.code_promo, {'attr': {'class': 'form-control'}}) }}
+                                       {{ form_errors(form.code_promo, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    
+
+                                    <div class="col-12">
+                                        {{ form_label(form.date_debut, 'date_debut', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.date_debut, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.date_debut, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.date_fin, 'date_fin', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.date_fin, {'attr': {'class': 'form-control'}}) }}
+                                         {{ form_errors(form.date_fin, {'attr': {'class': 'text_danger'}}) }}
+                                    </div>
+                               <div class="col-12">
+    
+</div>
+                                    <div class="col-12">
+                                    <br>
+                                        <button class="mt-40 btn-one" type="submit"><span>ADD Promotion</span></button>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+ <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var typePromoRadios = document.querySelectorAll('input[name="promotion[type_promo]"]');
+        var codePromoField = document.getElementById('code_promo_field');
+       
+        
+
+        typePromoRadios.forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                if (this.value === 'code_promo') {
+                    codePromoField.style.display = 'block';
+                      minMontantField.style.display = 'none';
+                    minMontantField.value = '-';
+                     minUtiisateurField.style.display = 'none';
+                    minUtiisateurField.value = '-';
+                  
+                   
+                } 
+                else {
+                    codePromoField.style.display = 'none';
+                    codePromoField.value = '-';
+                
+                 
+                   
+                }
+            });
+        });
+    });
+</script>
+
+
+            
+{% endblock %}

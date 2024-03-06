@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Competitiondesigner{% endblock %}
+
+{% block body %}
+    <h1>Create new Competitiondesigner</h1>
+
+    {{ include('competitiondesigner/_form.html.twig') }}
+
+    <a href="{{ path('app_competitiondesigner_index') }}">back to list</a>
+{% endblock %}

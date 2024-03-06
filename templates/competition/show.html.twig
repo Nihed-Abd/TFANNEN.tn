@@ -1,0 +1,81 @@
+
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Promotion - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Create a New Promotion
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details to create a new Promotion
+{% endblock %}
+
+
+
+
+{% block body %}
+    <!-- Your page content goes here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                     
+                                    <div class="col-12">
+                                        
+    <h1>Competition</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ competition.id }}</td>
+            </tr>
+            <tr>
+                <th>Description</th>
+                <td>{{ competition.description }}</td>
+            </tr>
+            <tr>
+                <th>Regle</th>
+                <td>{{ competition.regle }}</td>
+            </tr>
+            <tr>
+                <th>Recompense</th>
+                <td>{{ competition.recompense }}</td>
+            </tr>
+            <tr>
+                <th>Date_debut</th>
+                <td>{{ competition.dateDebut ? competition.dateDebut|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Date_fin</th>
+                <td>{{ competition.dateFin ? competition.dateFin|date('Y-m-d') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_competition_dash') }}">back to list</a>
+
+    <a href="{{ path('app_competition_edit', {'id': competition.id}) }}">edit</a>
+
+    {{ include('competition/_delete_form.html.twig') }}
+
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
