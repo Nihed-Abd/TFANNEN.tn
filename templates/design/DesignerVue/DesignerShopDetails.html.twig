@@ -49,8 +49,8 @@ Details
                         {% for avi in design.avis %}
                             {% set total_rating = total_rating + avi.avis %}
                             {% set avis_count = avis_count + 1 %}
-                        {% endfor %}000
-0    00                    {% if avis_count > 0 %}
+                        {% endfor %}
+                   {% if avis_count > 0 %}
                             {% set average_rating = total_rating / avis_count %}
                             <div class="star primary-color pb-2">
                                 {% set full_stars = average_rating | round %}
@@ -162,6 +162,5 @@ Details
         <!-- description review area end here -->
     </div>
 </section>
-
 
 {% endblock %}

@@ -14,14 +14,30 @@
                         <th scope="col">#</th>
                         <th scope="col">Rating</th>
                         <th scope="col">Comment</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for avi in avis %}
                     <tr>
                         <th scope="row">{{ loop.index }}</th>
-                        <td>{{ avi.avis }}</td>
+                        <td>
+                            {% for i in range(1, 5) %}
+                                {% if avi.avis >= i %}
+                                    <i class="fas fa-star"></i>
+                                {% else %}
+                                    <i class="far fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                        </td>
                         <td>{{ avi.commentaire }}</td>
+                        <td>
+                            <form action="{{ path('admin_avis_delete', {'id': avi.id}) }}" method="post" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                                <input type="hidden" name="_method" value="DELETE">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avi.id) }}">
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="fas fa-trash"></i> Delete</button>
+                            </form>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -30,4 +46,3 @@
     </div>
 </div>
 {% endblock %}
-

@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 #[Route('/avis')]
 class AvisController extends AbstractController
@@ -66,7 +67,22 @@ class AvisController extends AbstractController
             ]);
     }
 
+    #[Route('/admin/design/remove/{id}', name: 'admin_avis_delete', methods: ['POST'])]
+public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
+{
+    // Check if the CSRF token is valid
+    if ($this->isCsrfTokenValid('delete'.$avi->getId(), $request->request->get('_token'))) {
+        // Remove the "avis" entity
+        $entityManager->remove($avi);
+        $entityManager->flush();
 
+        // Get the design ID from the "avi" object
+        $designId = $avi->getDesign()->getId();
+
+        // Redirect to the "admin_design_avis" route with the design ID
+        return new RedirectResponse($this->generateUrl('admin_design_avis', ['id' => $designId]));
+    }
+}
  ///////////////////////////////* Designer Functions *////////////////////////////
         #[Route('/designer/{users_id}/{design_id}/avis', name: 'designer_avis_show')]
             public function showDesignerAvis(int $id, AvisRepository $avisRepository): Response
@@ -105,14 +121,5 @@ class AvisController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_avis_delete', methods: ['POST'])]
-    public function delete(Request $request, Avis $avi, EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$avi->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($avi);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('app_avis_index', [], Response::HTTP_SEE_OTHER);
-    }
+  
 }

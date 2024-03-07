@@ -13,7 +13,10 @@ Details
 {% block banner_subtitle %}
     Fill in the details of the product
 {% endblock %}
-
+{% block head %}
+    <!-- Add the og:image meta tag -->
+    <meta property="og:image" content="{{ app.request.schemeAndHttpHost }}{{ asset('uploads/' ~ design.picture) }}">
+{% endblock %}
 {% block body %}
 <section class="shop-single pt-130 pb-130">
     <div class="container">
@@ -83,16 +86,20 @@ Details
                                 <div class="d-flex flex-wrap align-items-center py-3 bor-bottom">
                                     <h4 class="pe-3">Share:</h4>
                                     <div class="social-media">
-                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
-                                                class="fa-brands fa-facebook-f"></i></a>
-                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
-                                                class="fa-brands fa-twitter"></i></a>
-                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
-                                                class="fa-brands fa-linkedin-in"></i></a>
-                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
-                                                class="fa-brands fa-instagram"></i></a>
-                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
-                                                class="fa-brands fa-pinterest-p"></i></a>
+                                     <div class="social-media">
+    <a href="#" class="mx-2 primary-color secondary-hover" onclick="shareOnFacebook('{{ design.titre }}', '{{ design.picture }}', '{{ design.prix }}')"><i class="fab fa-facebook-f"></i></a>
+    <a href="#" class="mx-2 primary-color secondary-hover" onclick="shareOnTwitter('{{ design.titre }}', '{{ design.picture }}', '{{ design.prix }}')"><i class="fa-brands fa-twitter"></i></a>
+    <a href="#" class="mx-2 primary-color secondary-hover" onclick="shareOnLinkedIn('{{ design.titre }}', '{{ design.picture }}', '{{ design.prix }}')"><i class="fa-brands fa-linkedin-in"></i></a>
+    <a href="#" class="mx-2 primary-color secondary-hover" onclick="shareOnInstagram('{{ design.titre }}', '{{ design.picture }}', '{{ design.prix }}')"><i class="fa-brands fa-instagram"></i></a>
+    <a href="#" class="mx-2 primary-color secondary-hover" onclick="shareOnPinterest('{{ design.titre }}', '{{ design.picture }}', '{{ design.prix }}')"><i class="fa-brands fa-pinterest-p"></i></a>
+   <!-- QR Code Button -->
+    {% set jsonData = {
+        'id': design.id,
+        'price': design.prix
+    } | json_encode %}
+    <a href="{{ path('app_QrCode', {'id': design.id}) }}" type="button" class="mx-2 primary-color secondary-hover" data-toggle="modal" data-target="#qrCodeModal{{ design.id }}"><i class="fas fa-qrcode"></i></a>
+</div>
+
                                     </div>
                                 </div>
                                 <div class="cart-wrp py-4">
@@ -162,6 +169,54 @@ Details
         <!-- description review area end here -->
     </div>
 </section>
+
+<script>
+    function shareOnFacebook(title, picture) {
+        // Full URL of the image
+        let fullImageUrl = '{{ app.request.schemeAndHttpHost }}{{ asset('uploads/' ~ design.picture) }}';
+
+        // Construct the Facebook share URL
+        let shareUrl = 'https://www.facebook.com/sharer/sharer.php?quote=' + encodeURIComponent(title) + '&u=' + encodeURIComponent(window.location.href) + '&picture=' + encodeURIComponent(fullImageUrl);
+
+        // Open the share dialog
+        window.open(shareUrl, 'Facebook Share', 'width=600,height=400');
+    }
+
+function shareOnTwitter(title, picture, price) {
+    // Construct the Twitter share URL
+    let shareUrl = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title + ' - Price: ' + price) + '&url=' + encodeURIComponent(window.location.href);
+
+    // Open the share dialog
+    window.open(shareUrl, 'Twitter Share', 'width=600,height=400');
+}
+
+function shareOnLinkedIn(title, price) {
+    // Construct the LinkedIn share URL
+    let shareUrl = 'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent(title + ' - Price: ' + price) + '&summary=' + encodeURIComponent('Check out this product');
+
+    // Open the share dialog
+    window.open(shareUrl, 'LinkedIn Share', 'width=600,height=400');
+}
+
+function shareOnInstagram(title, picture, price) {
+    // Construct the Instagram share URL
+    let shareUrl = 'https://www.instagram.com/share?url=' + encodeURIComponent(window.location.href) + '&title=' + encodeURIComponent(title + ' - Price: ' + price) + '&summary=' + encodeURIComponent('Check out this product') + '&source=' + encodeURIComponent(picture);
+
+    // Open the share dialog
+    window.open(shareUrl, 'Instagram Share', 'width=600,height=400');
+}
+
+function shareOnPinterest(title, picture, price) {
+    // Construct the Pinterest share URL
+    let shareUrl = 'https://www.pinterest.com/pin/create/button/?url=' + encodeURIComponent(window.location.href) + '&media=' + encodeURIComponent(picture) + '&description=' + encodeURIComponent(title + ' - Price: ' + price);
+
+    // Open the share dialog
+    window.open(shareUrl, 'Pinterest Share', 'width=600,height=400');
+}
+
+
+</script>
+
 
 
 {% endblock %}

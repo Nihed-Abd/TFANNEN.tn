@@ -1,7 +1,8 @@
 <?php
 
 namespace App\Controller;
-
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelHigh;
+use Endroid\QrCode\QrCode;
 use App\Entity\Design;
 use App\Entity\Avis;
 use App\Entity\User;
@@ -14,8 +15,21 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
-
-
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Encoding\Encoding;
+use Symfony\Component\HttpFoundation\ResponseHeaderBag;
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeInterface;
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\ErrorCorrectionLevel\ErrorCorrectionLevelLow;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode\RoundBlockSizeModeMargin;
+use Endroid\QrCode\Writer\ValidationException;
+use Endroid\QrCode\Label\Font\NotoSans;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\Persistence\ManagerRegistry; 
 
 #[Route('/design')]
 class DesignController extends AbstractController
@@ -69,6 +83,35 @@ public function searchDesigns(Request $request, DesignRepository $designReposito
         'currentPage' => $currentPage,
         'productsPerPage' => $productsPerPage,
     ]);
+}
+/////////////////////////// QRCODE //////////////////
+#[Route('/QrCode/{id}', name: 'app_QrCode')]
+public function qrGenerator(ManagerRegistry $doctrine, $id, DesignRepository $designRepository)
+{
+    
+    $design = $designRepository->find($id);
+    
+    if (!$design) {
+        throw $this->createNotFoundException('Design not found');
+    }
+
+    $qrcode = QrCode::create($design->getTitre() .  " Et le prix est: " . $design->getPrix())
+        ->setEncoding(new Encoding('UTF-8'))
+        ->setSize(300)
+        ->setMargin(10)
+        ->setForegroundColor(new Color(0, 0, 0))
+        ->setBackgroundColor(new Color(255, 255, 255));
+    
+    $writer = new PngWriter();
+    $response = new Response($writer->write($qrcode)->getString(),
+        Response::HTTP_OK,
+        ['content-type' => 'image/png']
+    );
+    
+    $disposition = $response->headers->makeDisposition(ResponseHeaderBag::DISPOSITION_ATTACHMENT, 'qrcode.png');
+    $response->headers->set('Content-Disposition', $disposition);
+    
+    return $response;
 }
 
     //////////////////////////* Client Functions *///////////////////////////
@@ -203,6 +246,7 @@ public function showClient(?Design $design, $user_id): Response
 
         ]);
     }
+
             //* store design show *//
     #[Route('/designer/mystore/{users_id}/{design_id}', name: 'designer_ownDesign_show')]
     public function showDesignDetailsOwnStore(int $users_id ,int $design_id, DesignRepository $designRepository): Response
@@ -301,8 +345,45 @@ public function designerDesignDelete(int $users_id, int $design_id, Request $req
         return $this->redirectToRoute('admin_design_index', [], Response::HTTP_SEE_OTHER);
     }
 
+
+    ////////////////////////* PDF Function *////////////////////////////
+
+    #[Route('/{id}/pdf', name: 'app_design_pdf', methods: ['GET'])]     
+    public function AfficheTicketPDF(DesignRepository $repo, $id)
+    {
+    $pdfoptions = new Options();
+    $pdfoptions->set('defaultFont', 'Arial');
+    $pdfoptions->setIsRemoteEnabled(true);
     
-   
+
+    $dompdf = new Dompdf($pdfoptions);
+
+    $design = $repo->find($id);
+
+    // Check if the ticket exists
+    if (!$design) {
+        throw $this->createNotFoundException('Your Design does not exist');
+    }
+
+    $html = $this->renderView('design/AdminVue/pdfExport.html.twig', [
+        'design' => $design
+    ]);
+
+    $html = '<div>' . $html . '</div>';
+
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A6', 'landscape');
+    $dompdf->render();
+
+    $pdfOutput = $dompdf->output();
+
+    return new Response($pdfOutput, Response::HTTP_OK, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'inline; filename="designPDF.pdf"'
+    ]);
+}
+
+ 
     
 
 }
