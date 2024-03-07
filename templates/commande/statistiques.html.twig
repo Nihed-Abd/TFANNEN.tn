@@ -1,0 +1,95 @@
+{% extends 'baseAdmin.html.twig' %}
+{# templates/statistiques/index.html.twig #}
+
+{% block body %}
+<h1>Statistiques</h1>
+<div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+        
+        <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+</div>
+    <div class="container-fluid pt-4 px-4">
+        <div class="bg-secondary rounded-top p-4">
+            <canvas id="myChart1" width="400" height="400"></canvas>
+        </div>
+    </div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        // Generate distinct colors dynamically
+        var colors = generateColors({{ livreursStats|length }});
+
+        var myChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: [{% for stats in livreursStats %}'{{ stats.livreurName }}',{% endfor %}],
+                datasets: [{
+                    label: 'Nombre de commandes',
+                    data: [{% for stats in livreursStats %}{{ stats.ordersDelivered }},{% endfor %}],
+                    backgroundColor: colors,
+                    borderColor: colors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                cutout: '80%',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Nombre de livraisons par livreur',
+                        font: {
+                            size: 16,
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        });
+
+        // Function to generate distinct colors
+        function generateColors(count) {
+            var colors = [];
+            for (var i = 0; i < count; i++) {
+                var hue = (i * (360 / count)) % 360;
+                colors.push('hsl(' + hue + ', 70%, 60%)');
+            }
+            return colors;
+        }
+    });
+</script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('myChart1').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Prix > 1000', 'Prix <= 1000'],
+                    datasets: [{
+                        label: 'Nombre de commandes',
+                        data: [{{ commandesPrixSup1000 }}, {{ commandesPrixInf1000 }}],
+                        backgroundColor: [
+                            'rgba(75, 192, 192, 0.7)',
+                            'rgba(255, 99, 132, 0.7)',
+                            // Add more colors if needed
+                        ],
+                        borderColor: [
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(255, 99, 132, 1)',
+                            // Add more colors if needed
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                }
+            });
+        });
+    </script>
+{% endblock %}

@@ -20,6 +20,15 @@ class LivraisonRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Livraison::class);
     }
+    public function getLivreurStatistics()
+    {
+        $query = $this->createQueryBuilder('l')
+            ->select('l.livreur as livreurName', 'COUNT(l.id) as ordersDelivered')
+            ->groupBy('l.livreur')
+            ->getQuery();
+
+        return $query->getResult();
+    }
 
 //    /**
 //     * @return Livraison[] Returns an array of Livraison objects

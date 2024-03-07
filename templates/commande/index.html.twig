@@ -1,18 +1,172 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}{% endblock %}
+    {% block header %}
+    <div class="top__header pt-30 pb-30">
+        <div class="container">
+            <div class="top__wrapper">
+                <a href="index.html" class="main__logo">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo__image">
+                </a>
+                <!-- Search form -->
+                <div class="search__wrp">
+                  <form action="{{ path('search') }}" method="get">
+                    <input type="text" name="q" placeholder="Search for" aria-label="Search">
+                    <button type="submit"><i class="fa-solid fa-search"></i></button>
+                    </form>
+                </div>
+                <div class="account__wrap">
+                    <div class="account d-flex align-items-center">
+                        <div class="user__icon">
+                            <a href="#0">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </div>
+                        <a href="#0" class="acc__cont">
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+                    <div class="cart d-flex align-items-center">
+                        <span class="cart__icon">
+                            <i class="fa-regular fa-cart-shopping"></i>
+                        </span>
+                        <a href="#0" class="c__one">
+                            <span>
+                                $0.00
+                            </span>
+                        </a>
+                        <span class="one">
+                            0
+                        </span>
+                    </div>
+                    <div class="flag__wrap">
+                        <div class="flag">
+                            <img src="{{ asset('assets/images/flag/tn.png')}}" alt="flag">
+                        </div>
+                        <select name="flag">
+                            <option value="0">
+                                Tn
+                            </option>
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="header-bar d-lg-none">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="main-menu">
+                    
+                    <li>
+                        <a href="about.html">Home</a>
+                    </li>
+                       <li>
+                        <a href="#">Store</a>
+                    </li>
+                    <li>
+                        <a href="#0">FeedBack <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="shop.html">
+                                    FeedBacks
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="shop-2.html">
+                                    Admin Answers
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#0">Competitions <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="blog.html">
+                                    Competitions
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="blog-grid.html">
+                                    Rewards
+                                </a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="eventsRoute">Events</a>
+                    </li>
+                </ul>
+                <div class="shipping__item d-none d-sm-flex align-items-center">
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/studio.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Wanna Show Your Creativity ?
+                            </p>
+                          <div class="items">
+    <button class="orange-button" type="submit"><span>Try it Now !</span></button>
+</div>
 
+<style>
+    .orange-button {
+        background-color: #fa4318;
+        color: white; 
+        border: none; 
+        border-radius: 20px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+    }
+
+    .orange-button:hover {
+        background-color: #e03c13; 
+    }
+</style>
+
+                        </div>
+                    </div>
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/shipping.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Free Shipping <br> on order <strong>over 100 TND</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+            {% endblock %}
 {% block body %}
   
   
 
 
-                <section class="page-banner bg-image pt-130 pb-130">
-                <h1 class="mb-4">Liste Des Commandes </h1>
-            <div class="container-fluid pl-65 pr-65">
-                <div class="row g-4 justify-content-center">
-                        {% for commande in commandes %}
-        {% if commande.user == user %}
+<section class="page-banner bg-image pt-130 pb-130">
+    <h1 class="mb-4">Liste Des Commandes</h1>
+    <div class="container-fluid pl-65 pr-65">
+        <div class="row g-4 justify-content-center">
+            {% for commande in commandes %}
+                {% if commande.user == user %}
+                    <!-- Your commandes content goes here -->
                     <div class="col-xxl-6">
                         <div class="blog__item-left">
                             <div class="row g-4 align-items-center">
@@ -22,32 +176,46 @@
                                         <h3>Téléphone : {{ commande.numTel }}</h3>
                                         <h3>Prix : {{ commande.prix }}</h3>
                                         <h3>Prduits : {{ commande.produits }}</h3>
-                                         <a href="{{ path('app_commande_delete_f', {'id': commande.id}) }}" class="orange-button">
-                                             <i class="fas fa-plus mr-2"></i> Supprimer
-                                         </a>
-                                         <a href="{{ path('app_commande_edit', {'id': commande.id}) }}" class="orange-button">
-                                             <i class="fas fa-plus mr-2"></i> Modifier
-                                         </a>
-
+                                        <a href="{{ path('app_commande_delete_f', {'id': commande.id}) }}"
+                                           class="orange-button">
+                                            <i class="fas fa-plus mr-2"></i> Supprimer
+                                        </a>
+                                        <a href="{{ path('app_commande_edit', {'id': commande.id}) }}"
+                                           class="orange-button">
+                                            <i class="fas fa-plus mr-2"></i> Modifier
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                                 {% endif %}
-    
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+<div class="container">
+    <div class="mt-65">
+        {% for page in range(1, commandes.pageCount) %}
+            {% if page == commandes.currentPageNumber %}
+                <a class="blog-pegi active" href="{{ path('app_commande_index', {'page': page}) }}">{{ page }}</a>
+            {% else %}
+                <a class="blog-pegi" href="{{ path('app_commande_index', {'page': page}) }}">{{ page }}</a>
+            {% endif %}
         {% endfor %}
-                </div>
-            </div>
-            <div class="container">
-                <div class="mt-65">
-                    <a class="blog-pegi" href="#0">01</a>
-                    <a class="blog-pegi active" href="#0">02</a>
-                    <a class="blog-pegi" href="#0">03</a>
-                    <a href="#0"><i class="fa-solid fa-arrow-right-long"></i></a>
-                </div>
-            </div>
-        </section>
+
+        {# Add next page link if there is a next page #}
+        {% if commandes.currentPageNumber < commandes.pageCount %}
+            <a href="{{ path('app_commande_index', {'page': commandes.currentPageNumber + 1}) }}">
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+
+
+
+</section>
 
 
 {% endblock %}

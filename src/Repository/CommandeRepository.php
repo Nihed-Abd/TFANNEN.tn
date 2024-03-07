@@ -45,4 +45,46 @@ class CommandeRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
+public function searchByTerm($term)
+{
+    $results = $this->createQueryBuilder('c')
+        ->andWhere('c.produits LIKE :term OR c.prix LIKE :term OR c.adresse LIKE :term OR c.num_tel LIKE :term')
+        ->setParameter('term', '%' . $term . '%')
+        ->getQuery()
+        ->getResult();
+
+    // Convert prix to string in PHP
+    foreach ($results as $result) {
+        $result->setPrix((string) $result->getPrix());
+    }
+
+    return $results;
+}
+public function orderByFieldDESC($fieldName)
+{
+    return $this->createQueryBuilder('c')
+        ->orderBy("c.$fieldName", 'DESC')
+        ->getQuery()
+        ->getResult();
+}
+public function countByPrixGreaterThan($prix): int
+{
+    return $this->createQueryBuilder('c')
+        ->select('COUNT(c.id)')
+        ->andWhere('c.prix > :prix')
+        ->setParameter('prix', $prix)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
+public function countByPrixLessThanOrEqual($prix): int
+{
+    return $this->createQueryBuilder('c')
+        ->select('COUNT(c.id)')
+        ->andWhere('c.prix <= :prix')
+        ->setParameter('prix', $prix)
+        ->getQuery()
+        ->getSingleScalarResult();
+}
+
 }
