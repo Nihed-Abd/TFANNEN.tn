@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Competitiondesigner index{% endblock %}
+
+{% block body %}
+    <h1>Competitiondesigner index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+               
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for competitiondesigner in competitiondesigners %}
+            <tr>
+                
+                <td>{{ competitiondesigner.name }}</td>
+                <td>{{ competitiondesigner.email }}</td>
+                <td>{{ competitiondesigner.phone }}</td>
+                <td>
+                    <a href="{{ path('app_competitiondesigner_show', {'id': competitiondesigner.id}) }}">show</a>
+                    &nbsp;&nbsp;
+                    <a href="{{ path('app_competitiondesigner_edit', {'id': competitiondesigner.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_competitiondesigner_new') }}">Create new</a>
+{% endblock %}

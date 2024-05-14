@@ -1,0 +1,164 @@
+{% extends 'baseDesigner.html.twig' %}
+
+{% block title %}New Design - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+Details
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details of Your product
+{% endblock %}
+
+{% block body %}
+<section class="shop-single pt-130 pb-130">
+    <div class="container">
+        <!-- product-details area start here -->
+        <div class="product-details-single pb-40">
+            <div class="row g-4">
+                <div class="col-lg-5">
+                    <div class="image img">
+                        <div class="swiper shop-single-slide">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                                </div>
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-3 swiper shop-slider-thumb">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide">
+                                    <img src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7">
+                    <div class="content h24">
+                        <h3 class="pb-2 primary-color">{{ design.titre }}</h3>
+                        {% set total_rating = 0 %}
+                        {% set avis_count = 0 %}
+                        {% for avi in design.avis %}
+                            {% set total_rating = total_rating + avi.avis %}
+                            {% set avis_count = avis_count + 1 %}
+                        {% endfor %}
+                        {% if avis_count > 0 %}
+                            {% set average_rating = total_rating / avis_count %}
+                            <div class="star primary-color pb-2">
+                                {% set full_stars = average_rating | round %}
+                                {% set empty_stars = 5 - full_stars %}
+                                {% for i in range(1, full_stars + 1) %}
+                                    <span><i class="fa-solid fa-star sm-font"></i></span>
+                                {% endfor %}
+                                {% for i in range(1, empty_stars + 1) %}
+                                    <span><i class="fa-regular fa-star sm-font"></i></span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="star primary-color pb-2">
+                                {% for i in range(1, 6) %}
+                                    <span><i class="fa-regular fa-star sm-font"></i></span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                        <h2 class="pb-3">{{ design.prix }} TND</h2>
+                        <h4 class="pb-2 primary-color">Product Description</h4>
+                        <p class="text-justify mb-10">{{ design.description }}</p>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="details-area">
+                                <div class="category flex-wrap mt-4 d-flex py-3 bor-top bor-bottom">
+                                    <h4 class="pe-3">Categories :</h4>
+                                    <a href="#0" class="primary-hover">{{ design.categorie }}</a>
+                                </div>
+                                <div class="d-flex flex-wrap align-items-center py-3 bor-bottom">
+                                    <h4 class="pe-3">Share:</h4>
+                                    <div class="social-media">
+                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
+                                                class="fa-brands fa-facebook-f"></i></a>
+                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
+                                                class="fa-brands fa-twitter"></i></a>
+                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
+                                                class="fa-brands fa-linkedin-in"></i></a>
+                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
+                                                class="fa-brands fa-instagram"></i></a>
+                                        <a href="#" class="mx-2 primary-color secondary-hover"><i
+                                                class="fa-brands fa-pinterest-p"></i></a>
+                                    </div>
+                                </div>
+                                <div class="cart-wrp py-4">
+                                    <div class="cart-quantity">
+                                        <form id='myform' method='POST' class='quantity' action='#'>
+                                            <input type='button' value='-' class='qtyminus minus'>
+                                            <input type='text' name='quantity' value='0' class='qty'>
+                                            <input type='button' value='+' class='qtyplus plus'>
+                                        </form>
+                                    </div>
+                                    <div class="discount">
+                                        <input type="text" placeholder="Enter Discount Code">
+                                    </div>
+                                </div>
+                                <a href="#0" class="d-block text-center btn-two mt-40"><span><i
+                                            class="fa-solid fa-basket-shopping pe-2"></i>
+                                        add
+                                        to
+                                        cart</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- description review area start here -->
+        <div class="shop-singe-tab">
+            <div class="tab-content">
+                <div id="review" class="tab-pane fade show active">
+                    <div class="review-wrp">
+                        <h4 class="text-uppercase">Reviews ({{ design.avis|length }})</h4>
+                        <br>
+                        {% for avi in design.avis %}
+                            <div class="abmin d-flex flex-wrap flex-md-nowrap align-items-center pb-4">
+                                <div class="img pb-4 pb-md-0 me-4">
+                                </div>
+                                <div class="content position-relative p-4 bor">
+                                    <div class="head-wrp pb-1 d-flex flex-wrap justify-content-between">
+                                        <a href="#0">
+                                        </a>
+                                        <div class="star primary-color">
+                                            {% for i in 1..5 %}
+                                                {% if i <= avi.avis %}
+                                                    <span><i class="fa-solid fa-star sm-font"></i></span>
+                                                {% else %}
+                                                    <span><i class="fa-solid fa-star-o sm-font"></i></span>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                    <p class="text-justify">{{ avi.commentaire }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <div class="section-title mt-5 py-15 mb-30">
+<a href="{{ path('app_design_edit', {'users_id': app.user.id, 'design_id': design.id }) }}" class="btn-one">Edit</a>
+</div>
+
+                </div>
+            </div>
+        </div>
+        <!-- description review area end here -->
+    </div>
+</section>
+
+
+{% endblock %}

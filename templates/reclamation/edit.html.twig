@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Reclamation{% endblock %}
+
+{% block body %}
+<section class="edit-reclamation pt-130 pb-130">
+    <div class="container">
+        <h1>Edit Reclamation</h1>
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="content radius-10 bg-image">
+                    <h2>Changed your mind? <br>
+                        No Problem.</h2>
+                    <p>Adipiscing elit, sed do eiusmod tempor incididunt ut labore <br> et dolore magna
+                        aliqua.
+                        Ut enim ad minim.</p>
+                    <div class="arry"><img src="{{ asset('assets/images/contact/arry.png') }}" alt=""></div>
+                    <ul>
+                        <li><a href="https://www.google.com/maps/d/viewer?mid=1UZ57Drfs3SGrTgh6mrYjQktu6uY&amp;hl=en_US&amp;ll=18.672105000000013%2C105.68673800000003&amp;z=17"
+                                target="_blank"><i class="fa-solid fa-location-dot"></i>785 15h Street,
+                                Office
+                                478
+                                Berlin </a>
+                        </li>
+                        <li><a href="tel:1-732-798-0976"><i class="fa-solid fa-phone-volume"></i>+1 800
+                                555 45
+                                65</a>
+                        </li>
+                        <li><a href="mailto:company.info@mail.com"><i
+                                    class="fa-solid fa-envelope"></i>info.stoky@company.com</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="form-area">
+                    {{ include('reclamation/_form.html.twig', {'button_label': 'Update'}) }}
+                    <div class="mt-3">
+                        <div class="mb-3">
+                            <a href="{{ path('app_reclamation_index', {'user_id': app.user.id}) }}" class="btn btn-primary me-2">Back to List</a>
+                        </div>
+                        <div>
+                            {{ include('reclamation/_delete_form.html.twig') }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

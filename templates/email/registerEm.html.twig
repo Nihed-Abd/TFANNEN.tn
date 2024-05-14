@@ -1,0 +1,5 @@
+<h1>Activate your account</h1>
+<p>Morning ! {{ user.username }},</p>
+<p>Your subscription in our website is only validated if you click on the link below: </P>
+<p><a href="{{ absolute_url(path('verify_user', {token: token})) }}">Link</a></p>
+<p>This link expires in 3 hours</p>

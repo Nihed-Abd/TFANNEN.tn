@@ -1,0 +1,522 @@
+{% extends 'base.html.twig' %}
+ {% block header %}
+ <div class="top__header pt-30 pb-30">
+        <div class="container">
+            <div class="top__wrapper">
+                <a href="index.html" class="main__logo">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo__image">
+                </a>
+                <div class="search__wrp">
+                    <input placeholder="Search for" aria-label="Search">
+                    <button><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div class="account__wrap">
+                   <div class="account d-flex align-items-center">
+                        <div class="user__icon">
+                            <a href="#0">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </div>
+                        <a href="{{ path('edit_user') }}" class="acc__cont">
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+                   <div class="cart d-flex align-items-center">
+    <span class="cart__icon">
+        <i class="fa-regular fa-cart-shopping"></i>
+    </span>
+    <a href="javascript:void(0);" onclick="redirectToNewRoute();" class="c__one" id="totprice" style="color: black;">
+        <span style="color: black;">
+            0.00 DNT
+        </span>
+    </a>
+    <span class="one" id="quantity">
+        0
+    </span>
+</div>
+                    <div class="cart d-flex align-items-center">
+                        <span class="cart__icon">
+                            <i class="fa-regular fa-cart-shopping"></i>
+                        </span>
+                        <a href="{{ path('app_logout') }}" class="c__one">
+                            <span>
+                                Logout
+                            </span>
+                        </a>
+                       
+                    </div>
+                    <div class="flag__wrap">
+                        <div class="flag">
+                            <img src="{{ asset('assets/images/flag/tn.png')}}" alt="flag">
+                        </div>
+                        <select name="flag">
+                            <option value="0">
+                                Tn
+                            </option>
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="header-bar d-lg-none">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="main-menu">
+                    
+                    <li>
+                        <a href="{{ path('base_client')}}">Home</a>
+                    </li>
+                       <li>
+                        <a href="{{ path('app_design_index', {'user_id': app.user.id}) }}">Store</a>
+                    </li>
+                    <li>
+                        <a href="#0">FeedBack <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="{{ path('app_reclamation_index', {'user_id': app.user.id}) }}">
+                                    FeedBacks
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="{{ path('app_reclamation_new', {'user_id': app.user.id}) }}">
+                                    Add FeedBack
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#0">Competitions <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="{{ path('app_promotion_index') }}">
+                                    Soldes
+                                </a>
+                            </li>   
+                        </ul>
+                    </li>
+                  
+                </ul>
+                <div class="shipping__item d-none d-sm-flex align-items-center">
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/studio.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Wanna Show Your Creativity ?
+                            </p>
+                          <div class="items">
+<a href="{{ path('become-designer') }}">
+    <button class="orange-button">
+        <span>Try it Now !</span>
+    </button>
+</a></div>
+
+<style>
+    .orange-button {
+        background-color: #fa4318;
+        color: white; 
+        border: none; 
+        border-radius: 20px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+    }
+
+    .orange-button:hover {
+        background-color: #e03c13; 
+    }
+</style>
+
+                        </div>
+                    </div>
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/shipping.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Free Shipping <br> on order <strong>over 100 TND</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          {% if app.user and app.user.isVerified == false %}
+          
+          <div class= "alert alert-warning alert-dismissable" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="close"></button>
+                <div class="alert-message">
+                    <strong>Your account is not activated</strong>,<a href="">Go to the activation's link </a>
+                </div>
+            </div>
+        {% endif %}
+        {% include "flash.html.twig" %}
+
+    </header>
+            {% endblock %}
+{% block title %}New Design - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+       Welcome To Our Store
+{% endblock %}
+
+{% block banner_subtitle %}
+   Shop
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        ::-webkit-slider-thumb {
+            background: #fa4318;
+        }
+
+        ::-moz-range-thumb {
+            background: #fa4318;
+        }
+
+        input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 1px solid #fa4318;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+        }
+
+        input[type="checkbox"]:checked {
+            background-color: #fa4318;
+        }
+        /* Styling for the search bar */
+        .search-input {
+    width: calc(100% - 28px);
+    padding: 8px;
+    border: 1px solid #fa4318; /* Set border color */
+    border-radius: 3px;
+    outline: none;
+}
+
+.search-input:focus {
+    border-color: #fa4318; /* Change border color on focus */
+}
+.zoom-effect {
+        transition: transform 0.3s ease;
+    }
+
+    .zoom-effect:hover {
+        transform: scale(1.1); /* Adjust the scale value as needed */
+    }
+    /* Zoom effect for back-image */
+    .zoom-effect-back {
+        transition: transform 0.3s ease;
+    }
+
+    .zoom-effect-back:hover {
+        transform: scale(1.1); /* Adjust the scale value as needed */
+    }
+
+    </style>
+{% endblock %}
+
+{% block body %}
+<section class="product-area pt-130 pb-130">
+    <div class="container">
+        <div class="pb-20 bor-bottom shop-page-wrp d-flex justify-content-between align-items-center mb-65">
+ <p class="fw-600">Showing {{ designs|length }} of {{ totalDesigns }} Designs</p>
+            <div class="short">
+                 <select name="shortList" id="shortList" onchange="sortProducts(this.value)">
+                    <option value="0">Short by :</option>
+                    <option value="1">Highest Rate</option>
+                    <option value="2">Newest</option>
+                    <option value="3">oldest</option>
+                    <option value="4">Highest Price </option>
+                    <option value="5">Lowest Price </option>
+                </select>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-xl-3 col-lg-4">
+                <div class="product__left-item sub-bg">
+                    <div class="image mb-30">
+                        <img src="{{ asset('assets/images/icons/filter.png')}}" alt="image">
+                    </div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Price</a></h4>
+                        <!-- Slider for Price -->
+                        <input type="range" min="1" max="500" value="250" class="slider" id="priceSlider">
+                        <p>Value: <span id="priceValue" style="color: #fa4318;">250</span> DT</p>
+                    </div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Search</a></h4>
+                        <!-- Search Bar -->
+                                <input type="text" id="searchInput" class="search-input" placeholder="Search for designs..." onkeyup="searchDesigns()">
+                                <button class="btn" type="button" style="background-color: transparent; border: none;" onclick="startSpeechRecognition()">
+                                <i class="bi bi-mic" style="color: white;"></i> <!-- Bootstrap Icons microphone icon -->
+
+                    </div>
+                    
+                    <div class="image pt-40 mb-30 bor-top mt-40"></div>
+                    <div class="product__content p-0">
+                        <h4 class="mb-15"><a class="primary-hover">Category</a></h4>
+                        <!-- Category Checkboxes -->
+                        <label><input type="checkbox" value="t_shirts" class="category-filter"> T-shirts</label><br>
+                        <label><input type="checkbox" value="hoodies" class="category-filter"> Hoodies</label><br>
+                        <label><input type="checkbox" value="pants" class="category-filter"> Pants</label><br>
+                        <label><input type="checkbox" value="dresses" class="category-filter"> Dresses</label><br>
+                        <label><input type="checkbox" value="jackets" class="category-filter"> Jackets</label><br>
+                        <label><input type="checkbox" value="sweatshirts" class="category-filter"> Sweatshirts</label><br>
+                        <label><input type="checkbox" value="skirts" class="category-filter"> Skirts</label><br>
+                        <label><input type="checkbox" value="sports_Themes" class="category-filter"> Sports Themes</label><br>
+                        <label><input type="checkbox" value="Funny" class="category-filter"> Funniest and Troll</label><br>
+                        <label><input type="checkbox" value="hat" class="category-filter"> Hats</label><br>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-xl-9 col-lg-8">
+                <div class="row g-4" id="productList">
+                    {% for design in designs %}
+    <div class="col-xl-4 col-lg-6 col-md-6 product-item" data-price="{{ design.prix }}" data-category="{{ design.categorie }}" data-id="{{ design.id }}" data-average-rating="{{ design.averageRating }}">
+                        <div class="product__item bor">
+                            <a href="#0" class="wishlist"><i class="fa-regular fa-heart"></i></a>
+                            <a href="{{ path('app_design_show', {'design_id': design.id, 'users_id': app.user.id }) }}" class="product__image pt-20 d-block">
+                                <img class="font-image zoom-effect" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+            <img class="back-image zoom-effect" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                            </a>
+
+                            <div class="product__content">
+                                <h4 class="mb-15"><a class="primary-hover" href="{{ path('app_design_show', {'design_id': design.id, 'users_id': app.user.id }) }}">{{ design.titre }}</a></h4>
+                                <span class="primary-color">{{ design.prix }} DT</span>
+                               <div class="star mt-20">
+                    {% set averageRating = design.getAverageRating() %}
+                    {% for i in 1..5 %}
+                        {% if i <= averageRating %}
+                            <i class="fa-solid fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                            </div>
+                            <a class="product__cart d-block bor-top" onclick="addToCart('{{ design.titre }}', '{{ design.prix }}'); return false;"><i
+                                            class="fa-regular fa-cart-shopping primary-color me-1"></i>
+                                        <span>Add to
+                                            cart</span></a>
+                                </div>
+                    </div>
+                    {% else %}
+                    <div class="col-12">
+                        <p>Sorry! No Product found, Visit us later</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                <div class="pagi-wrp mt-65">
+            {% for page in 1..totalPages %}
+<a href="{{ path('app_design_index', {'user_id': app.user.id, 'page': page}) }}" class="pagi-btn {% if page == currentPage %}active{% endif %}">{{ page }}</a>
+            {% endfor %}
+        </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    var slider = document.getElementById("priceSlider");
+    var output = document.getElementById("priceValue");
+    output.innerHTML = slider.value;
+
+    slider.oninput = function() {
+        output.innerHTML = this.value;
+        filterProducts(parseInt(this.value));
+    }
+
+    function filterProducts(price) {
+        var products = document.getElementsByClassName("product-item");
+        var selectedCategories = getSelectedCategories();
+        for (var i = 0; i < products.length; i++) {
+            var productPrice = parseInt(products[i].getAttribute("data-price"));
+            var productCategory = products[i].getAttribute("data-category");
+            if (productPrice > price || (selectedCategories.length > 0 && !selectedCategories.includes(productCategory))) {
+                products[i].style.display = "none";
+            } else {
+                products[i].style.display = "block";
+            }
+        }
+    }
+
+    function getSelectedCategories() {
+        var checkboxes = document.getElementsByClassName("category-filter");
+        var selectedCategories = [];
+        for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i].checked) {
+                selectedCategories.push(checkboxes[i].value);
+            }
+        }
+        return selectedCategories;
+    }
+
+    var categoryCheckboxes = document.getElementsByClassName("category-filter");
+    for (var i = 0; i < categoryCheckboxes.length; i++) {
+        categoryCheckboxes[i].addEventListener("change", function() {
+            filterProducts(parseInt(slider.value));
+        });
+    }
+
+    function searchDesigns() {
+        var input, filter, productList, productItem, title, i, txtValue;
+        input = document.getElementById('searchInput');
+        filter = input.value.toUpperCase();
+        productList = document.getElementById("productList");
+        productItem = productList.getElementsByClassName('product-item');
+
+        for (i = 0; i < productItem.length; i++) {
+            title = productItem[i].getElementsByTagName("h4")[0];
+            txtValue = title.textContent || title.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                productItem[i].style.display = "";
+            } else {
+                productItem[i].style.display = "none";
+            }
+        }
+    }
+    // Fonction pour démarrer la reconnaissance vocale
+    function startSpeechRecognition() {
+        // Démarrer la reconnaissance vocale
+        const recognition = new webkitSpeechRecognition() || new SpeechRecognition();
+        recognition.lang = 'fr-FR'; // Définir la langue de la reconnaissance vocale (facultatif)
+        recognition.start();
+
+        // Écouter les résultats de la reconnaissance vocale
+        recognition.onresult = function(event) {
+            const recognizedText = event.results[0][0].transcript.trim(); // Récupérer le texte reconnu
+            const cleanedText = recognizedText.endsWith('.') ? recognizedText.slice(0, -1) : recognizedText; // Supprimer le dernier caractère s'il s'agit d'un point
+            document.getElementById('searchInput').value = cleanedText; // Afficher le résultat dans le champ de recherche
+
+            // Appel de la fonction de recherche lorsque du texte est reconnu
+            searchDesigns(cleanedText); 
+        };
+
+        // Gérer les erreurs éventuelles de la reconnaissance vocale
+        recognition.onerror = function(event) {
+            console.error('Erreur de reconnaissance vocale:', event.error);
+        };
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Event listener pour la saisie clavier
+        var searchInput = document.getElementById('searchInput');
+        if (searchInput) {
+            searchInput.addEventListener('keyup', function () {
+                var searchText = this.value;
+                searchUser(searchText);
+            });
+        }
+    });
+    
+function sortProducts(sortBy) {
+    var productList = document.getElementById("productList");
+    var productItems = productList.querySelectorAll('.product-item');
+
+    // Convert NodeList to array for easier sorting
+    var productArray = Array.from(productItems);
+
+    switch (sortBy) {
+        case '1':
+            productArray.sort((a, b) => {
+                let averageRatingA = parseFloat(a.dataset.averageRating);
+                let averageRatingB = parseFloat(b.dataset.averageRating);
+                return averageRatingB - averageRatingA;
+            });
+            break;
+        case '2':
+    // Newest (Highest ID to Lowest ID)
+    productArray.sort((a, b) => {
+        return parseInt(b.getAttribute('data-id')) - parseInt(a.getAttribute('data-id'));
+    });
+    break;
+case '3':
+    // Oldest (Lowest ID to Highest ID)
+    productArray.sort((a, b) => {
+        return parseInt(a.getAttribute('data-id')) - parseInt(b.getAttribute('data-id'));
+    });
+    break;
+        case '4':
+            // Highest Price
+            productArray.sort((a, b) => {
+                return parseFloat(b.dataset.price) - parseFloat(a.dataset.price);
+            });
+            break;
+        case '5':
+            // Lowest Price
+            productArray.sort((a, b) => {
+                return parseFloat(a.dataset.price) - parseFloat(b.dataset.price);
+            });
+            break;
+        default:
+            // Default sorting (show as it is in HTML)
+            break;
+    }
+
+    // Re-append sorted product items to productList
+    productList.innerHTML = '';
+    productArray.forEach(item => {
+        productList.appendChild(item);
+    });
+}
+  function addToCart(titre, prix) {
+        // Create a FormData object to send data via AJAX
+        var formData = new FormData();
+        formData.append('titre', titre);
+        formData.append('prix', prix);
+
+        // Update the quantity and total price directly without using the response
+        var cartQuantityElement = document.getElementById('quantity');
+        var cartTotalElement = document.getElementById('totprice');
+
+        if (cartQuantityElement && cartTotalElement) {
+            // Increment quantity by 1
+            cartQuantityElement.textContent = parseInt(cartQuantityElement.textContent) + 1;
+            
+            // Add the price to the total price
+            var currentTotalPrice = parseFloat(cartTotalElement.textContent.replace('DNT', ''));
+            var newTotalPrice = currentTotalPrice + parseFloat(prix);
+            cartTotalElement.textContent = newTotalPrice.toFixed(2) + 'DNT';
+        }
+
+        // Make a fetch request to your Symfony controller
+        fetch('{{ path('add_to_cart') }}', {
+            method: 'POST',
+            body: formData,
+        })
+        .catch(error => {
+            // Handle errors during the fetch request
+            console.error('Fetch error:', error);
+        });
+    }
+
+     function redirectToNewRoute() {
+             // Redirect to the new route
+        window.location.href = "{{ path('app_commande_new') }}";
+    }
+</script>
+{% endblock %}

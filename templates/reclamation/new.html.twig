@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Reclamation{% endblock %}
+
+{% block body %}
+    <h1>Create new Reclamation</h1>
+    <section class="contact pt-130 pb-130">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="content radius-10 bg-image">
+                        <h2>Have something in mind? <br>
+                            Let's talk.</h2>
+                        <p>Adipiscing elit, sed do eiusmod tempor incididunt ut labore <br> et dolore magna
+                            aliqua.
+                            Ut enim ad minim.</p>
+                        <div class="arry"><img src="assets/images/contact/arry.png" alt=""></div>
+                        <ul>
+                            <li><a href="https://www.google.com/maps/d/viewer?mid=1UZ57Drfs3SGrTgh6mrYjQktu6uY&amp;hl=en_US&amp;ll=18.672105000000013%2C105.68673800000003&amp;z=17"
+                                    target="_blank"><i class="fa-solid fa-location-dot"></i>785 15h Street,
+                                    Office
+                                    478
+                                    Berlin </a>
+                            </li>
+                            <li><a href="tel:1-732-798-0976"><i class="fa-solid fa-phone-volume"></i>+1 800
+                                    555 45
+                                    65</a>
+                            </li>
+                            <li><a href="mailto:company.info@mail.com"><i
+                                        class="fa-solid fa-envelope"></i>info.stoky@company.com</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="form-area">
+                        {{ form_start(form , {'attr': {'class':'form-horizontal','novalidate':'novalidate'}} ) }}
+                        {{ form_row(form.objet, {'attr': {'placeholder': 'Objet...'}}) }}
+                        {{ form_row(form.type_de_reclamation, {'attr': {'placeholder': 'Type_De_Reclamation...'}}) }}
+                        {{ form_row(form.description_reclamation, {'attr': {'placeholder': 'Description_Reclamation...'}}) }}
+                        {{ form_row(form.date) }}
+                            <div class="radio-btn mt-2">
+                            <span></span>
+                            <p>I accept your terms & conditions</p>
+                        </div>
+                        <button class="mt-40 btn-one"><span>Submit Now</span></button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="{{ path('app_reclamation_index', {'user_id': app.user.id}) }}">back to list</a>
+{% endblock %}

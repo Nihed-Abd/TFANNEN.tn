@@ -1,0 +1,204 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Design - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/register/banner.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Create a New Design
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details to sign up
+{% endblock %}
+
+{% block body %}
+
+<main>
+ 
+
+
+ 
+
+    <!-- Login area start here -->
+    <section class="login-area pt-130 pb-130">
+        <div class="container">
+            <div class="login__item">
+                <div class="row g-4">
+                    <div class="col-xxl-8">
+                        <div class="login__image">
+                            <img src="{{ asset('assets/images/register/res-image1.jpg')}}" alt="image">
+                            <div class="btn-wrp">
+                                <a href='{{ path('app_login') }}'>sign in</a>
+                                <a class="active" href='{{ path('register')}}'>create account</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4">
+                        <div class="login__content">
+                            <h2 class="text-white mb-65">Create Account</h2>
+                            <div class="form-area login__form">
+                                {# Start the form rendering #}
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.6.0.min.js"></script>
+
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }}
+
+{# Render each form field #}
+{{ form_row(form.username) }}
+{{ form_row(form.email) }}
+{{ form_label(form.password.first) }}
+{{ form_widget(form.password.first) }}
+{{ form_errors(form.password.first, {'attr': {'style': 'color: red;' }}) }}
+
+{{ form_label(form.password.second) }}
+{{ form_widget(form.password.second) }}
+{{ form_errors(form.password.second, {'attr': {'style': 'color: red;' }}) }}
+
+{# Display the image choices dynamically using jQuery #}
+
+
+{{ form_label(form.picture, null, { 'label_attr': {'id': 'pictureLabel'} }) }}
+{{ form_widget(form.picture, { 'attr': {'style': 'display: none;', 'id': 'picture', 'value': ''} }) }}
+{{ form_errors(form.picture) }}
+
+
+
+<div id="imageChoicesContainer" style="display: none;"></div>
+<button type="button" id="toggleImageChoices">Toggle Image Choices</button>
+{# ... rest of the form rendering #}
+{{ form_row(form.recaptcha) }}
+{{ form_errors(form.recaptcha) }}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+   $(document).ready(function () {
+    console.log('jQuery script executed!');
+
+    var selectedImage = ''; // Variable to store the selected image name
+
+    // Function to fetch and populate images
+    function fetchAndPopulateImages() {
+        $.ajax({
+            url: '{{ path('get_images') }}',
+            method: 'POST',
+            success: function (images) {
+                var container = $('#imageChoicesContainer');
+                container.empty(); // Clear previous content
+
+                images.forEach(function (image) {
+                    container.append('<img src="/assets/images/avatars/' + image + '" alt="' + image + '" class="image-choice" style="max-width: 100px; max-height: 100px;">');
+                });
+
+                // Attach click event to each image to select it
+                $('.image-choice').click(function () {
+                    selectedImage = $(this).attr('alt');
+                    $('#pictureLabel').text('Selected: ' + selectedImage); // Optional: Update label text
+                    $('#imageChoicesContainer').hide();
+                });
+            },
+            error: function (error) {
+                console.error('Error fetching images: ', error);
+            }
+        });
+    }
+
+    // Toggle visibility of the image choices container when button is clicked
+    $('#toggleImageChoices').click(function () {
+        var container = $('#imageChoicesContainer');
+        if (container.is(':visible')) {
+            container.hide();
+        } else {
+            fetchAndPopulateImages();
+            container.show();
+        }
+    });
+
+    // Add an event listener for form submission
+    $('form').submit(function () {
+        console.log('Form submitted!');
+            console.log('Selected Image:', selectedImage);
+
+
+        // Set the selected image value in the hidden avatar field
+        $('#picture').val(selectedImage);
+        
+    });
+
+    // Trigger file input click on toggle button click
+    $('#toggleImageChoices').click(function () {
+        $('#picture').click(); // Trigger click event on the file input field
+    });
+});
+
+</script>
+
+
+{# CSS (Optional) #}
+<style>
+    .image-choice {
+        width: 50px; /* Adjust the size as needed */
+        height: 50px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    .image-choice:hover {
+        border: 2px solid #007bff; /* Highlight on hover */
+    }
+</style>
+
+{# Display errors below the form fields #}
+<div class="radio-btn mt-30">
+        <span><input type="checkbox" id="agreeTermsCheckbox" class="custom-checkbox"></span>
+    <label for="agreeTermsCheckbox">I accept your terms & conditions</label>
+</div>
+<button class="mt-30" type="submit" id="submitBtn" >Create Account</button>
+
+{# End the form rendering #}
+{{ form_end(form) }}
+
+<script>
+    $(document).ready(function () {
+        // Update button state based on checkbox
+        $('#agreeTermsCheckbox').change(function () {
+            if ($(this).is(':checked')) {
+                $('#submitBtn').prop('disabled', false);
+            } else {
+                $('#submitBtn').prop('disabled', true);
+            }
+        });
+    });
+</script>
+
+                    <span class="or pt-30 pb-40">OR</span>
+                            </div>
+                            <div class="login__with">
+                                <a href='{{ path('register_google_start')}}'><img src="assets/images/icon/google.svg" alt=""> continue with google</a>
+                                <a class="mt-15" href="#0"><img src="assets/images/icon/facebook.svg" alt=""> continue with facebook</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Login area end here -->
+</main>
+{#<script>
+    const emailInput = document.getElementById('emailInput');
+    const emailValidationMessage = document.getElementById('emailValidationMessage');
+        emailValidationMessage.style.display = 'none';
+
+    emailInput.addEventListener('input', function () {
+        const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value);
+        emailValidationMessage.style.display = isValidEmail ? 'none' : 'block';
+        
+
+        const color = emailValidationMessage.getAttribute('data-color');
+        emailValidationMessage.style.color = isValidEmail ? 'transparent' : color;
+    });
+</script>#}
+
+
+{% endblock %}

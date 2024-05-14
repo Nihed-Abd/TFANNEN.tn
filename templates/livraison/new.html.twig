@@ -1,0 +1,23 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}New Livraison{% endblock %}
+
+{% block body %}
+
+    <h1>Create new Livraison</h1>
+     <div class="container-fluid pt-4 px-4">
+     <div class="bg-secondary rounded-top p-4">
+     {{ form_start(form,{'attr': {'class': 'form','novalidate':'novalidate'}}) }}
+                            <div class="mb-3">
+                                <h5>{{ form_label(form.livreur) }}</h5>
+                                {{ form_widget(form.livreur, {'attr': {'class': 'form-control', 'placeholder': 'livreur'}}) }}
+                                {{ form_errors(form.livreur) }}
+                            </div>
+                               <button class="btn btn-lg btn-primary btn-lg-square" style="width: 250px;height: 30px;" type="submit">
+                                  <i class="fas fa-plus mr-2"></i> {{button_label|default('Créer Commande')}}
+                                </button>
+                                
+                        {{ form_end(form) }}
+                        </div>
+                        </div>
+{% endblock %}

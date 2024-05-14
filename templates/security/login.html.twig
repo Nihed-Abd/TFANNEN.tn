@@ -1,0 +1,71 @@
+{% extends 'VisitorBase.html.twig' %}
+
+{% block title %}Log in!{% endblock %}
+{% block banner_background %}
+   data-background="{{ asset('assets/images/register/banner.jpg')}}"
+{% endblock %}
+{% block banner_subtitle %}
+    Fill in the details to sign in
+{% endblock %}
+{% block body %}
+<main>
+
+ <!-- Login area start here -->
+    <section class="login-area pt-130 pb-130">
+        <div class="container">
+            <div class="login__item">
+                <div class="row g-4">
+                    <div class="col-xxl-8">
+                        <div class="login__image">
+                            <img src="{{ asset('assets/images/register/res-image1.jpg')}}" alt="image">
+                            <div class="btn-wrp">
+                                <a class="active" href='{{ path('app_login') }}'>sign in</a>
+                                <a href='{{ path('register')}}'>create account</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xxl-4">
+                        <div class="login__content">
+                            <h2 class="text-white mb-65">Create Account</h2>
+                            <div class="form-area login__form">
+        <form method="post">
+      
+
+         {% if app.user %}
+        <div class="mb-3">
+            {#You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>#}
+        </div>
+        {% endif %}
+
+    
+    <label for="inputEmail">Email</label>
+    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+    <label for="inputPassword">Password</label>
+    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+      {% if error %}
+        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
+
+    <input type="hidden" name="_csrf_token"
+           value="{{ csrf_token('authenticate') }}"
+    >
+
+<button class="mt-30" type="submit" id="submitBtn" >Sign in</button>
+    </button>
+</form>
+    <span class="or pt-30 pb-40"><a href='{{ path('app_forgot_password_request')}}'>Forgot Password?</a></span>
+   <span class="or pt-30 pb-40">OR</span>
+                            </div>
+                            <div class="login__with">
+                                <a href='{{ path('register_google_start')}}'"><img src="assets/images/icon/google.svg" alt=""> continue with google</a>
+                                <a class="mt-15" href="#0"><img src="assets/images/icon/facebook.svg" alt=""> continue with facebook</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Admin Product's Controlller{% endblock %}
+
+{% block body %}
+<div class="container">
+    <div class="row">
+        {% for design in designs %}
+        <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+            <div class="card bg-dark text-white"> <!-- Added bg-dark and text-white classes for styling -->
+                <img class="card-img-top" src="{{ asset('uploads/' ~ design.picture) }}" alt="image">
+                <div class="card-body">
+                    <h5 class="card-title">{{ design.titre }}</h5>
+                    <p class="card-text">Price: {{ design.prix }}</p>
+                    <p class="card-text">Category: {{ design.categorie }}</p>
+                    <p class="card-text">Description: {{ design.description }}</p>
+                    <div class="actions">
+                        <form action="{{ path('app_design_delete', {'id': design.id}) }}" method="post" style="display: inline;">
+                            <input type="hidden" name="_method" value="DELETE">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ design.id) }}">
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                        <a href="{{ path('admin_design_avis', {'id': design.id}) }}" class="btn btn-primary">View Avis</a>
+                        <a href="{{ path('app_design_pdf', {'id': design.id}) }}" class="btn btn-primary">Export PDF</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+
+
+
+
+
+{% extends 'base.html.twig' %}
+
+{% block title %}New Competition - TFANNEN{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner2.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Create a New Competition
+{% endblock %}
+
+{% block banner_subtitle %}
+    Fill in the details to create a new Competition
+{% endblock %}
+
+
+
+
+{% block body %}
+   <div class="col-12">
+          <h1>Competition index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Regle</th>
+                <th>Recompense</th>
+                <th>Date_debut</th>
+                <th>Date_fin</th>
+                 <th>actions</th>
+            
+            </tr>
+        </thead>
+        <tbody>
+        {% for competition in competitions %}
+            <tr>
+                <td>{{ competition.id }}</td>
+                <td>{{ competition.name }}</td>
+                <td>{{ competition.description }}</td>
+                <td>{{ competition.regle }}</td>
+                <td>{{ competition.recompense }}</td>
+                <td>{{ competition.dateDebut ? competition.dateDebut|date('Y-m-d') : '' }}</td>
+                <td>{{ competition.dateFin ? competition.dateFin|date('Y-m-d') : '' }}</td>                   
+                 <td>
+                    <a href="{{ path('competition_participate', {'id': competition.id}) }}"><button class="mt-40 btn-one" type="submit"><span>Participate</span></button></a>
+                </td>
+        
+               
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    </div>                               
+
+    
+                                   
+    <!-- Your page content goes here -->
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                
+                                     
+                                 
+                                   
+                                   
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

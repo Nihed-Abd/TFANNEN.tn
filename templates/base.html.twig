@@ -1,19 +1,311 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}TFANNEN- Tunisian designers Hub{% endblock %}</title>
+    <!-- Favicon img -->
+    {% block stylesheets %}
+    <link rel="shortcut icon" href="{{ asset('assets/images/favicon.png')}}">
+    <!-- Bootstarp min css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css')}}">
+    <!-- All min css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/all.min.css')}}">
+    <!-- Swiper bundle min css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/swiper-bundle.min.css')}}">
+    <!-- Magnigic popup css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/magnific-popup.css')}}">
+    <!-- Animate css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/animate.css')}}">
+    <!-- Nice select css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/nice-select.css')}}">
+    <!-- Style css -->
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css')}}">
+    {% endblock %}
 
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-        {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-    </body>
+</head>
+
+<body>
+    <!-- Header area start here -->
+   {% block header %}
+ <div class="top__header pt-30 pb-30">
+        <div class="container">
+            <div class="top__wrapper">
+                <a href="index.html" class="main__logo">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo__image">
+                </a>
+                <div class="search__wrp">
+                    <input placeholder="Search for" aria-label="Search">
+                    <button><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div class="account__wrap">
+                   <div class="account d-flex align-items-center">
+                        <div class="user__icon">
+                            <a href="#0">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </div>
+                        <a href="{{ path('edit_user') }}" class="acc__cont">
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+                   <div class="cart d-flex align-items-center">
+    <span class="cart__icon">
+        <i class="fa-regular fa-cart-shopping"></i>
+    </span>
+    <a href="javascript:void(0);" onclick="redirectToNewRoute();" class="c__one" id="totprice" style="color: black;">
+        <span style="color: black;">
+            0.00 DNT
+        </span>
+    </a>
+    <span class="one" id="quantity">
+        0
+    </span>
+</div>
+                    <div class="cart d-flex align-items-center">
+                        <span class="cart__icon">
+                            <i class="fa-regular fa-cart-shopping"></i>
+                        </span>
+                        <a href="{{ path('app_logout') }}" class="c__one">
+                            <span>
+                                Logout
+                            </span>
+                        </a>
+                       
+                    </div>
+                    <div class="flag__wrap">
+                        <div class="flag">
+                            <img src="{{ asset('assets/images/flag/tn.png')}}" alt="flag">
+                        </div>
+                        <select name="flag">
+                            <option value="0">
+                                Tn
+                            </option>
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="header-bar d-lg-none">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+             
+                <div class="shipping__item d-none d-sm-flex align-items-center">
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/studio.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Wanna Show Your Creativity ?
+                            </p>
+                          <div class="items">
+<a href="{{ path('become-designer') }}">
+    <button class="orange-button">
+        <span>Try it Now !</span>
+    </button>
+</a></div>
+
+<style>
+    .orange-button {
+        background-color: #fa4318;
+        color: white; 
+        border: none; 
+        border-radius: 20px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+    }
+
+    .orange-button:hover {
+        background-color: #e03c13; 
+    }
+</style>
+
+                        </div>
+                    </div>
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/shipping.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Free Shipping <br> on order <strong>over 100 TND</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+          {% if app.user and app.user.isVerified == false %}
+          
+          <div class= "alert alert-warning alert-dismissable" role="alert">
+                <button type="button" class="btn-close" data-bs-dismiss="alert"
+                aria-label="close"></button>
+                <div class="alert-message">
+                    <strong>Your account is not activated</strong>,<a href="">Go to the activation's link </a>
+                </div>
+            </div>
+        {% endif %}
+        {% include "flash.html.twig" %}
+
+    </header>
+            {% endblock %}
+    <!-- Header area end here -->
+    <!-- Preloader area start -->
+    <div class="loading">
+        <span class="text-capitalize">L</span>
+        <span>o</span>
+        <span>a</span>
+        <span>d</span>
+        <span>i</span>
+        <span>n</span>
+        <span>g</span>
+    </div>
+
+    <div id="preloader">
+    </div>
+    <!-- Preloader area end -->
+
+    <!-- Mouse cursor area start here -->
+    <div class="mouse-cursor cursor-outer"></div>
+    <div class="mouse-cursor cursor-inner"></div>
+    <!-- Mouse cursor area end here -->
+
+    <main>
+
+        <!-- Banner area start here -->
+          <section class="page-banner bg-image pt-130 pb-130" {% block banner_background %}{% endblock %}>
+        <div class="container">
+            <h2 class="wow fadeInUp mb-15" data-wow-duration="1.1s" data-wow-delay=".1s">{% block banner_title %}{% endblock %}</h2>
+            <div class="breadcrumb-list wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".3s">
+                <a href="index.html" class="primary-hover"><i class="fa-solid fa-house me-1"></i> Home <i class="fa-regular text-white fa-angle-right"></i></a>
+                <span>{% block banner_subtitle %}{% endblock %}</span>
+            </div>
+        </div>
+    </section>
+        <!-- Banner area end here -->
+
+        <!-- Category area start here -->
+        {% block body %} {% endblock %}
+        
+
+        
+    </main>
+
+    <!-- Footer area start here -->
+    <footer class="footer-area bg-image" data-background="{{ asset('assets/images/footer/footer-bg.jpg')}}">
+        <div class="container">
+            <div class="footer__wrp pt-65 pb-65 bor-top bor-bottom">
+                <div class="row g-4">
+                    <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-duration="1.1s" data-wow-delay=".1s">
+                        <div class="footer__item">
+                            <h4 class="footer-title">Customer Service</h4>
+                            <ul>
+                                <li><a href="contact.html"><span></span>Help Portal</a></li>
+                                <li><a href="contact.html"><span></span>Contact Us</a></li>
+                                <li><a href="error.html"><span></span>Delivery Information</a></li>
+                                <li><a href="error.html"><span></span>Click and Collect</a></li>
+                                <li><a href="error.html"><span></span>Refunds and Returns</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-duration="1.2s" data-wow-delay=".2s">
+                        <div class="footer__item">
+                            <h4 class="footer-title">Get to Know Us</h4>
+                            <ul>
+                                <li><a href="about.html"><span></span>About Us</a></li>
+                                <li><a href="blog-grid.html"><span></span>News & Blog</a></li>
+                                <li><a href="error.html"><span></span>Careers</a></li>
+                                <li><a href="error.html"><span></span>Investors</a></li>
+                                <li><a href="contact.html"><span></span>Contact Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-duration="1.3s" data-wow-delay=".3s">
+                        <div class="footer__item">
+                            <h4 class="footer-title">vapes new collections</h4>
+                            <ul>
+                                <li><a href="shop.html"><span></span>E-Cigarettes</a></li>
+                                <li><a href="shop.html"><span></span>Vape Pens</a></li>
+                                <li><a href="shop.html"><span></span>Pod Systems</a></li>
+                                <li><a href="shop.html"><span></span>Disposable Vapes</a></li>
+                                <li><a href="shop.html"><span></span>Nicotine Salt Devices</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-xl-3 col-lg-6 col-md-6 wow fadeInUp" data-wow-duration="1.4s" data-wow-delay=".4s">
+                        <div class="footer__item newsletter">
+                            <h4 class="footer-title">get newsletter</h4>
+                            <div class="subscribe">
+                                <input type="email" placeholder="Your Email">
+                                <button><i class="fa-solid fa-paper-plane"></i></button>
+                            </div>
+                            <div class="social-icon mt-40">
+                                <a href="#0"><i class="fa-brands fa-facebook-f"></i></a>
+                                <a href="#0"><i class="fa-brands fa-twitter"></i></a>
+                                <a href="#0"><i class="fa-brands fa-linkedin-in"></i></a>
+                                <a href="#0"><i class="fa-brands fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer__copy-text pt-50 pb-50">
+                <a href="index.html" class="logo d-block">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo">
+                </a>
+                <p>&copy; Copyright 2023 <a href="https://github.com/Nihed-Abd" class="primary-hover">CrackxTn</a> All Rights Reserved</p>
+                <a href="#0" class="payment d-block image">
+                    <img src="{{ asset('assets/images/icon/payment.png')}}" alt="icon">
+                </a>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer area end here -->
+
+    <!-- Back to top area start here -->
+    <div class="scroll-up">
+        <svg class="scroll-circle svg-content" width="100%" height="100%" viewBox="-1 -1 102 102">
+            <path d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98" />
+        </svg>
+    </div>
+    <!-- Back to top area end here -->
+{% block javascripts %}
+    <!-- Jquery 3.7.1 Min Js -->
+    <script src="{{ asset('assets/js/jquery-3.7.1.min.js')}}"></script>
+    <!-- Bootstrap min Js -->
+    <script src="{{ asset('assets/js/bootstrap.min.js')}}"></script>
+    <!-- Swiper bundle min Js -->
+    <script src="{{ asset('assets/js/swiper-bundle.min.js')}}"></script>
+    <!-- Counterup min Js -->
+    <script src="{{ asset('assets/js/jquery.counterup.min.js')}}"></script>
+    <!-- Wow min Js -->
+    <script src="{{ asset('assets/js/wow.min.js')}}"></script>
+    <!-- Magnific popup min Js -->
+    <script src="{{ asset('assets/js/magnific-popup.min.js')}}"></script>
+    <!-- Nice select min Js -->
+    <script src="{{ asset('assets/js/nice-select.min.js')}}"></script>
+    <!-- Pace min Js -->
+    <script src="{{ asset('assets/js/pace.min.js')}}"></script>
+    <!-- Isotope pkgd min Js -->
+    <script src="{{ asset('assets/js/isotope.pkgd.min.js')}}"></script>
+    <!-- Waypoints Js -->
+    <script src="{{ asset('assets/js/jquery.waypoints.js')}}"></script>
+    <!-- Script Js -->
+    <script src="{{ asset('assets/js/script.js')}}"></script>
+    
+{% endblock %}
+
+</body>
 </html>

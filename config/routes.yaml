@@ -1,3 +1,89 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+get_images:
+    path: '/get_images'
+    controller: 'App\Controller\UserController::getImages'
+
+
+base_admin:
+    path: '/base-admin'
+    controller: 'App\Controller\UserAuthController::baseAdmin'
+
+base_client:
+    path: '/base-client'
+    controller: 'App\Controller\UserAuthController::baseClient'
+
+base_designer:
+    path: '/base-designer'
+    controller: 'App\Controller\UserAuthController::baseDesigner'
+
+
+search_users:
+    path: /search-users
+    controller: App\Controller\UserController::searchUsers
+
+app_reclamation_index:
+    path: /reclamation/{user_id}
+    controller: App\Controller\ReclamationController::index
+    methods: GET
+
+app_reclamation_new:
+    path: /reclamation/new/{user_id}
+    controller: App\Controller\ReclamationController::new
+    methods: [GET, POST]
+
+app_reclamation_show:
+    path: /reclamation/{id}
+    controller: App\Controller\ReclamationController::show
+    methods: GET
+
+app_reclamation_edit:
+    path: /reclamation/{user_id}/{id}/edit
+    controller: App\Controller\ReclamationController::edit
+    methods: [GET, POST]
+
+app_reclamation_delete:
+    path: /reclamation/{id}/{user_id}
+    controller: App\Controller\ReclamationController::delete
+    methods: ['POST']
+
+app_reponse_index:
+    path: /reponse
+    controller: App\Controller\ReponseController::index
+    methods: ['GET']
+
+app_reponse_new:
+    path: /reponse/new
+    controller: App\Controller\ReponseController::new
+    methods: ['GET', 'POST']
+
+app_reponse_show:
+    path: /reponse/{id}
+    controller: App\Controller\ReponseController::show
+    methods: ['GET']
+
+app_reponse_edit:
+    path: /reponse/{id}/edit
+    controller: App\Controller\ReponseController::edit
+    methods: ['GET', 'POST']
+
+app_reponse_delete:
+    path: /reponse/{id}
+    controller: App\Controller\ReponseController::delete
+    methods: ['POST']
+
+app_reclamation_respond:
+    path: /reclamation/{id}/respond
+    controller: App\Controller\ReponseController::respond
+    methods: ['GET', 'POST']
+
+app_reclamation_list:
+    path: /reclamations
+    controller: App\Controller\ReclamationController::listReclamations
+    methods: GET
+    
+app_reclamation_pdf:
+    path: '/reclamation/{reclamationId}/pdf'
+    controller: 'App\Controller\ReclamationController::generatePdf'
+

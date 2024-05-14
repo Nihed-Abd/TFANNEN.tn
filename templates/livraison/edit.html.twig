@@ -1,0 +1,26 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Modifier Livraison{% endblock %}
+
+{% block body %}
+    <div class="container-fluid pt-4 px-4">
+    <div class="bg-secondary rounded-top p-4">
+                        <h3 class="mb-4">Modifier Livraison</h3>
+
+                        {{ form_start(form, {'attr': {'class': 'form', 'novalidate': 'novalidate'}}) }}
+
+                        <div class="mb-3">
+                            <h5>{{ form_label(form.livreur) }}</h5>
+                            {{ form_widget(form.livreur, {'attr': {'class': 'form-control', 'placeholder': 'Livreur'}}) }}
+                            {{ form_errors(form.livreur) }}
+                        </div>
+
+                        <button class="btn btn-lg btn-primary btn-lg-square" style="width: 200px;height: 30px;" type="submit">
+                            <i class="fas fa-plus mr-2"></i> {{ button_label|default('Modifier Livraison') }}
+                        </button>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+{% endblock %}

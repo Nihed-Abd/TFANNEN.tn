@@ -1,0 +1,44 @@
+ {% extends 'base.html.twig' %}
+{% block title %}Two-Factor Authentication{% endblock %}
+{% block banner_background %}
+    {# Add the banner background styling if needed #}
+{% endblock %}
+{% block banner_subtitle %}
+    Check your mail!
+{% endblock %}
+
+{% block body %}
+<main>
+    
+</main>
+<style>
+
+
+.btn-orange {
+    background-color: #fa4f09;;
+    color: white;
+    padding: 10px 60px;
+    margin: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-orange:hover {
+    background-color: darkorange;
+}
+.cancel {
+    margin-top: 3rem;
+}
+
+.cancel a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    color: #333;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+</style>
+{% endblock %}

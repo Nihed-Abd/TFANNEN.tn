@@ -1,0 +1,59 @@
+{% extends 'baseDesigner.html.twig' %}
+
+{% block title %}Edit Design{% endblock %}
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/shop/banner.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Edit Design
+{% endblock %}
+
+{% block banner_subtitle %}
+    Modify the details of the design
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 offset-md-3">
+                <section class="contact pt-130 pb-130">
+                    <div class="container">
+                        <div class="row g-4">
+                            <div class="col-lg-6">
+                                <div class="form-area">
+                                    {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+                                    <div class="col-12">
+                                        {{ form_label(form.titre, 'Title', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.titre, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.prix, 'Price', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.prix, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.categorie, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.categorie, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        {{ form_label(form.picture, 'Picture', {'label_attr': {'class': 'form-label'}}) }}
+                                        {{ form_widget(form.picture, {'attr': {'class': 'form-control'}}) }}
+                                    </div>
+                                    <div class="col-12">
+                                        <button class="mt-40 btn-one" type="submit"><span>Update Design</span></button>
+                                    </div>
+                                    {{ form_end(form) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}

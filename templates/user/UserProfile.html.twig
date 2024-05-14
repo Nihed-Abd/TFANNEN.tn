@@ -1,0 +1,217 @@
+ {% extends 'base.html.twig' %}
+
+
+
+{% block banner_background %}
+    data-background="{{ asset('assets/images/register/banner.jpg')}}"
+{% endblock %}
+
+{% block banner_title %}
+    Navigate Freely!
+{% endblock %}
+    {% block title %}Edit Account{% endblock %}
+
+{% block banner_subtitle %}
+    Welcome to our website!
+{% endblock %}
+{% block header %}
+ <div class="top__header pt-30 pb-30">
+        <div class="container">
+            <div class="top__wrapper">
+                <a href="index.html" class="main__logo">
+                    <img src="{{ asset('assets/images/logo/logo3.png')}}" alt="logo__image">
+                </a>
+                <div class="search__wrp">
+                    <input placeholder="Search for" aria-label="Search">
+                    <button><i class="fa-solid fa-search"></i></button>
+                </div>
+                <div class="account__wrap">
+                   <div class="account d-flex align-items-center">
+                        <div class="user__icon">
+                            <a href="#0">
+                                <i class="fa-regular fa-user"></i>
+                            </a>
+                        </div>
+                        <a href="#0" class="acc__cont">
+                            <span>
+                                My Account
+                            </span>
+                        </a>
+                    </div>
+                    <div class="cart d-flex align-items-center">
+                        <span class="cart__icon">
+                            <i class="fa-regular fa-cart-shopping"></i>
+                        </span>
+                        <a href="#0" class="c__one">
+                            <span>
+                                $0.00
+                            </span>
+                        </a>
+                        <span class="one">
+                            0
+                        </span>
+                    </div>
+                    <div class="cart d-flex align-items-center">
+                        <span class="cart__icon">
+                            <i class="fa-regular fa-cart-shopping"></i>
+                        </span>
+                        <a href="{{ path('app_logout') }}" class="c__one">
+                            <span>
+                                Logout
+                            </span>
+                        </a>
+                       
+                    </div>
+                    <div class="flag__wrap">
+                        <div class="flag">
+                            <img src="{{ asset('assets/images/flag/tn.png')}}" alt="flag">
+                        </div>
+                        <select name="flag">
+                            <option value="0">
+                                Tn
+                            </option>
+                            
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <header class="header-section">
+        <div class="container">
+            <div class="header-wrapper">
+                <div class="header-bar d-lg-none">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <ul class="main-menu">
+                    
+                    <li>
+                        <a href="about.html">Home</a>
+                    </li>
+                       <li>
+                        <a href="about.html">Store</a>
+                    </li>
+                    <li>
+                        <a href="#0">FeedBack <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="shop.html">
+                                    FeedBacks
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="shop-2.html">
+                                    Admin Answers
+                                </a>
+                            </li>
+                            
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#0">Competitions <i class="fa-regular fa-angle-down"></i></a>
+                        <ul class="sub-menu">
+                            <li class="subtwohober">
+                                <a href="blog.html">
+                                    Competitions
+                                </a>
+                            </li>
+                            <li class="subtwohober">
+                                <a href="blog-grid.html">
+                                    Rewards
+                                </a>
+                            </li>
+                           
+                        </ul>
+                    </li>
+                    
+                    <li>
+                        <a href="eventsRoute">Events</a>
+                    </li>
+                </ul>
+                <div class="shipping__item d-none d-sm-flex align-items-center">
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/studio.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Wanna Show Your Creativity ?
+                            </p>
+                          <div class="items">
+ 
+</div>
+
+<style>
+    .orange-button {
+        background-color: #fa4318;
+        color: white; 
+        border: none; 
+        border-radius: 20px; 
+        padding: 10px 20px; 
+        font-size: 16px; 
+        cursor: pointer; 
+    }
+
+    .orange-button:hover {
+        background-color: #e03c13; 
+    }
+</style>
+
+                        </div>
+                    </div>
+                    <div class="menu__right d-flex align-items-center">
+                        <div class="thumb">
+                            <img src="{{ asset('assets/images/flag/shipping.png')}}" alt="image">
+                        </div>
+                        <div class="content">
+                            <p>
+                                Free Shipping <br> on order <strong>over 100 TND</strong>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+            {% endblock %}
+
+{% block body %}
+
+ <section class="login-area pt-130 pb-130">
+        <div class="container">
+            <div class="login__item">
+                <div class="row g-4">
+                    <div class="col-xxl-8">
+                        <div class="login__image">
+                            <img src="{{ asset('assets/images/register/res-image1.jpg')}}" alt="image">
+                           
+                        </div>
+                    </div>
+                    <div class="col-xxl-4">
+                        <div class="login__content">
+                            <div class="form-area login__form">
+
+    
+       
+
+    {% if form_errors(form) %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    <h1>Edit Profile</h1>
+
+    {# Render the form #}
+    {{ form_start(form) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+    {{ form_row(form.password.first) }} 
+    {{ form_row(form.password.second) }} 
+    {{ form_errors(form.password) }} 
+
+    <button type="submit">Save Changes</button>
+    {{ form_end(form) }}
+{% endblock %}

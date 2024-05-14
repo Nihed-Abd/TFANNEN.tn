@@ -1,0 +1,43 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Reponse{% endblock %}
+
+{% block body %}
+    <div class="container-fluid pt-4 px-4">
+        <div class="row g-4">
+            <div class="col-sm-12 col-xl-6">
+                <div class="bg-secondary rounded h-100 p-4">
+                    <h6 class="mb-4">Reponse Details</h6>
+                    <table class="table table-striped">
+                        <tbody>
+                            <tr>
+                                <th>Id</th>
+                                <td>{{ reponse.id }}</td>
+                            </tr>
+                            <tr>
+                                <th>Status</th>
+                                <td>{{ reponse.status }}</td>
+                            </tr>
+                            <tr>
+                                <th>Decision</th>
+                                <td>{{ reponse.decision }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div style="margin-bottom: 10px;">
+                        <a href="{{ path('app_reponse_index') }}" class="btn btn-secondary">Back to List</a>
+                    </div>
+
+                    <div>
+                        <a href="{{ path('app_reponse_edit', {'id': reponse.id}) }}" class="btn btn-primary">Edit</a>
+                    </div>
+
+                    <div style="margin-top: 10px;">
+                        {{ include('reponse/_delete_form.html.twig') }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
